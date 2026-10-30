@@ -1,2 +1,1547 @@
-:root{--bg:#f6f8fc;--surface:#fff;--ink:#17243b;--muted:#718096;--line:#e5eaf3;--blue:#5268ed;--blue-dark:#3c50d4;--mint:#dff8ed;--purple:#e8eaff;--shadow:0 18px 55px rgba(34,54,95,.08);--radius:22px}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.65}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}button{cursor:pointer}.topbar{height:76px;padding:0 max(5vw,24px);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;backdrop-filter:blur(14px)}.brand{display:inline-flex;align-items:center;gap:10px;font-weight:850;font-size:19px;letter-spacing:-.5px}.brand-mark{display:grid;place-items:center;width:39px;height:39px;border-radius:13px;color:#fff;background:linear-gradient(135deg,#6176ff,#7b54d9);font-size:14px;font-weight:850;box-shadow:0 7px 16px #6575ee3b}.desktop-nav{display:flex;gap:32px;color:#637087;font-size:14px;font-weight:650}.desktop-nav a:hover,.text-link:hover{color:var(--blue)}.top-actions{display:flex;align-items:center;gap:12px}.user-status{font-size:12px;color:var(--muted)}.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:12px;padding:12px 19px;font-size:13px;font-weight:750;transition:transform .18s,box-shadow .18s,background .18s}.button:hover{transform:translateY(-1px)}.button-primary{color:#fff;background:linear-gradient(115deg,#5a70f2,#7655db);box-shadow:0 9px 20px #5b68e52b}.button-primary:hover{box-shadow:0 12px 25px #5b68e545}.button-light{background:#f3f5fc;color:#4e5a72;padding:10px 14px}.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr .95fr;align-items:center;gap:55px;padding:86px max(8vw,30px) 80px;background:radial-gradient(ellipse at 80% 5%,#e9eaff 0,transparent 42%),linear-gradient(120deg,#fbfcff,#f4f6ff 60%,#f7f2ff)}.hero:before{content:"";position:absolute;width:400px;height:400px;border:1px solid #b7c1fa4a;border-radius:50%;right:-100px;top:-230px}.hero-copy{max-width:580px;position:relative;z-index:1}.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#6875d9;font-size:10px;font-weight:850;letter-spacing:1.7px}.pulse{width:7px;height:7px;border-radius:50%;background:#4cc89a;box-shadow:0 0 0 4px #4cc89a25}.hero h1{font-size:clamp(42px,5vw,68px);letter-spacing:-2.8px;line-height:1.14;margin:21px 0}.gradient-text{background:linear-gradient(95deg,#5369ee,#8657d9);color:transparent;background-clip:text}.hero-copy>p{font-size:15px;max-width:490px;line-height:1.95;color:#65738b;margin-bottom:28px}.hero-actions{display:flex;align-items:center;gap:24px}.text-link{font-size:13px;font-weight:750;color:#465675}.hero-stats{display:flex;gap:32px;margin-top:42px}.hero-stats div{display:flex;flex-direction:column;gap:1px}.hero-stats strong{font-size:21px;letter-spacing:-.5px}.hero-stats span{font-size:11px;color:var(--muted)}.hero-code{position:relative;background:#182239;border-radius:20px;padding:0 0 16px;box-shadow:0 30px 65px #27355c2b;transform:rotate(1deg);min-width:0}.code-window-head{height:52px;display:flex;align-items:center;gap:14px;padding:0 19px;border-bottom:1px solid #ffffff12;color:#a7b2cc;font-size:11px}.window-dots{display:flex;gap:5px}.window-dots i{width:7px;height:7px;border-radius:50%;background:#fb7d8a}.window-dots i:nth-child(2){background:#f7c86b}.window-dots i:nth-child(3){background:#5ed8aa}.live-pill{margin-left:auto;color:#6ee2ba;font-size:9px}.code-lines{padding:24px 18px 22px;color:#dbe4ff;font:12px/2.3 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap;overflow:hidden}.code-lines em{font-style:normal;color:#66738e;display:inline-block;width:23px}.kw{color:#bd9bff}.str{color:#8ce3c4}.fn{color:#82c9ff}.cursor{display:inline-block;height:14px;width:2px;background:#91a3ff;vertical-align:middle;margin-left:3px}.code-result{margin:0 16px;padding:13px 15px;display:flex;align-items:center;gap:11px;background:#24314b;border:1px solid #ffffff0c;border-radius:12px;color:#fff}.result-icon{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#254f4a;color:#6ce2b8}.code-result div{display:flex;flex-direction:column}.code-result small{font-size:8px;color:#8290aa;letter-spacing:1px}.code-result strong{font-size:11px}.result-time{margin-left:auto;color:#8494b0;font-size:10px}.floating-badge{position:absolute;background:#fff;padding:10px 14px;border-radius:12px;box-shadow:var(--shadow);font-size:11px;font-weight:750;color:#5c6681}.badge-top{right:-20px;top:72px}.badge-bottom{left:-24px;bottom:70px}.section{padding:78px max(8vw,30px)}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:25px}.section-heading h2,.lesson-panel h2,.quiz-intro h2{font-size:clamp(26px,3vw,36px);letter-spacing:-1.2px;line-height:1.3;margin:10px 0}.section-heading p,.quiz-intro>p{color:var(--muted);font-size:13px;margin:8px 0 0}.search-box{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 13px;width:230px;color:#8994aa}.search-box input{border:0;outline:0;width:100%;min-width:0;padding:12px 0;background:transparent;font-size:12px}.filter-row{display:flex;gap:9px;margin-bottom:22px;flex-wrap:wrap}.filter-chip{border:1px solid var(--line);background:#fff;color:#748096;padding:8px 15px;border-radius:99px;font-size:11px;font-weight:700}.filter-chip.active{background:#e9ecff;border-color:#d9ddff;color:#5264df}.course-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.course-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:19px 16px;display:flex;flex-direction:column;min-height:225px;transition:transform .2s,box-shadow .2s,border-color .2s;cursor:pointer}.course-card:hover,.course-card.selected{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#bfc8ff}.course-card.selected{outline:2px solid #e0e4ff}.course-icon{display:grid;place-items:center;width:45px;height:45px;border-radius:14px;font-weight:850;font-size:13px;margin-bottom:15px}.course-icon.python{background:#e8efff;color:#3b65bb}.course-icon.cpp{background:#e5f7f2;color:#19876e}.course-icon.html{background:#fff0e7;color:#db6b35}.course-icon.css{background:#f0eaff;color:#7b53c6}.course-icon.js{background:#fff8d9;color:#9b7a00}.course-card h3{font-size:15px;margin:0 0 4px}.course-card p{font-size:11px;color:var(--muted);line-height:1.7;margin:0 0 15px}.course-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;font-size:10px;color:#8590a4}.level-tag{padding:4px 7px;border-radius:6px;background:#f4f6fb}.course-empty{grid-column:1/-1;padding:32px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:15px}.split-section{display:grid;grid-template-columns:1.4fr .8fr;gap:25px;background:#fff}.lesson-panel{padding:6px 0}.lesson-content{margin:22px 0;color:#5d6a80;font-size:13px;line-height:2}.lesson-content h3{color:var(--ink);font-size:16px;margin:18px 0 7px}.lesson-content pre{padding:17px;background:#182239;color:#dce6ff;border-radius:12px;overflow:auto;font-size:12px;line-height:1.8}.lesson-content code{font-family:ui-monospace,Consolas,monospace}.lesson-actions{display:flex;align-items:center;gap:13px;flex-wrap:wrap}.muted{font-size:11px;color:var(--muted)}.progress-card{padding:26px;background:#f5f6ff;border:1px solid #e6e8ff;border-radius:20px;align-self:start}.progress-top{display:flex;align-items:center;justify-content:space-between}.progress-icon{display:grid;place-items:center;width:38px;height:38px;background:#e3e7ff;border-radius:12px;color:#5a6de8;font-size:20px}.mini-label{font-size:9px;font-weight:850;letter-spacing:1.5px;color:#7d87b2}.progress-card h3{font-size:18px;margin:19px 0 5px}.progress-card>p{font-size:12px;color:var(--muted);margin:0}.progress-numbers{display:flex;align-items:baseline;gap:8px;margin:23px 0 11px}.progress-numbers strong{font-size:32px;letter-spacing:-1px}.progress-numbers span{font-size:11px;color:var(--muted)}.progress-track{height:8px;background:#e2e6f6;border-radius:99px;overflow:hidden}.progress-track span{display:block;width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#5d77f2,#8b5bdb);transition:width .3s}.progress-foot{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--muted)}.progress-foot span:last-child{font-weight:800;color:#626ee1}.progress-divider{height:1px;background:#e2e5f5;margin:23px 0}.next-step{display:flex;gap:12px}.next-icon{display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;border-radius:10px;background:#fff;color:#7a64d9}.next-step strong{font-size:11px}.next-step p{font-size:11px;color:var(--muted);margin:4px 0 0}.editor-tag{font-size:11px;color:#348f72;background:#e3f8ef;padding:8px 12px;border-radius:99px;white-space:nowrap}.playground{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:#fff;border:1px solid #e0e5f0;border-radius:18px;box-shadow:var(--shadow)}.editor-side{background:#19243a;min-width:0}.editor-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid #ffffff12}.editor-tabs{display:flex;gap:5px}.editor-tab{border:0;border-radius:8px;background:transparent;color:#9ba8c3;padding:8px 10px;font-size:10px;font-weight:750}.editor-tab.active{background:#303d59;color:#fff}.small-button{background:#27334c;color:#b7c4dd;border:0;border-radius:8px;padding:8px 9px;font-size:10px}.editor-side textarea{display:block;resize:vertical;width:100%;min-height:310px;border:0;outline:0;background:#19243a;color:#dce6ff;padding:20px;font:12px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}.editor-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;border-top:1px solid #ffffff12;color:#9ca9c2;font-size:10px}.status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#54d6a2;margin-right:6px}.run-button{padding:9px 14px;font-size:11px}.preview-side{min-width:0;background:#fff;display:flex;flex-direction:column}.preview-head{height:52px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:750}.preview-window-dots{color:#a5b0c4;letter-spacing:2px;font-size:9px}#preview-frame{border:0;width:100%;min-height:310px;flex:1;background:#fff}.run-message{border-top:1px solid var(--line);padding:10px 15px;color:#7b879c;font-size:10px;min-height:36px}.safety-note{font-size:11px;line-height:1.8;color:#8b95a8;margin:14px 2px 0}.quiz-section{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:center;background:#f0f2ff}.quiz-intro h2{max-width:380px}.quiz-meta{display:flex;gap:15px;margin-top:24px;font-size:11px;color:#7781a3}.quiz-card{background:#fff;border:1px solid #e3e6f4;border-radius:20px;padding:25px;box-shadow:0 15px 45px #2d3d7a0d}.quiz-top{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#6672d8;font-size:10px;font-weight:800}.quiz-top span:last-child{color:#9aa3b8;letter-spacing:1px}.quiz-card h3{font-size:17px;line-height:1.6;margin:22px 0}.quiz-options{display:grid;gap:9px}.quiz-option{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#fff;border:1px solid #e4e8f2;border-radius:11px;padding:12px;color:#526078;font-size:12px}.quiz-option:hover:not(:disabled){border-color:#bfc7ff;background:#fafaff}.option-letter{display:grid;place-items:center;flex-shrink:0;width:26px;height:26px;border-radius:8px;background:#f0f2f9;color:#7884a0;font-size:10px;font-weight:850}.quiz-option.correct{background:#eaf9f1;border-color:#8dddb6;color:#237e57}.quiz-option.correct .option-letter{background:#c9f0dc;color:#237e57}.quiz-option.wrong{background:#fff0ef;border-color:#f2b2ad;color:#b94f49}.quiz-feedback{padding:12px 14px;margin-top:13px;border-radius:10px;font-size:11px;line-height:1.7}.quiz-feedback.good{background:#eaf9f1;color:#237e57}.quiz-feedback.bad{background:#fff3e9;color:#a45b26}.quiz-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}.quiz-bottom>span{font-size:11px;color:var(--muted)}.quiz-bottom .button{font-size:11px;padding:10px 14px}.button:disabled{opacity:.45;cursor:not-allowed;transform:none}.cta-section{margin:0 max(8vw,30px) 70px;padding:44px 48px;border-radius:23px;background:linear-gradient(115deg,#1e2a45,#293a62);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px;overflow:hidden;position:relative}.cta-section:after{content:"</>";position:absolute;right:24%;top:-55px;font-size:180px;font-weight:900;color:#ffffff08;pointer-events:none}.cta-section .eyebrow{color:#9eafff}.cta-section h2{font-size:30px;line-height:1.35;letter-spacing:-1px;margin:12px 0}.cta-section p{font-size:12px;color:#b5c0d7;margin:0}.cta-section .button{z-index:1;white-space:nowrap}.footer{padding:25px max(5vw,24px);display:flex;align-items:center;justify-content:space-between;gap:15px;background:#fff;border-top:1px solid var(--line);color:#8b95a8;font-size:10px}.footer .brand{color:var(--ink);font-size:15px}.footer .brand-mark{width:31px;height:31px;border-radius:10px;font-size:11px}.modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px}.modal-backdrop{position:absolute;inset:0;background:#101a30a8;backdrop-filter:blur(5px)}.modal-card{position:relative;z-index:1;width:min(100%,410px);background:#fff;border-radius:22px;padding:30px;box-shadow:0 25px 80px #0b173044}.modal-close{position:absolute;right:17px;top:14px;border:0;background:#f3f5fb;border-radius:9px;width:31px;height:31px;font-size:21px;color:#69758b}.modal-logo{margin-bottom:16px}.modal-card h2{font-size:22px;margin:0 0 5px}.modal-description{font-size:12px;color:var(--muted);margin:0 0 20px}.auth-switch{display:grid;grid-template-columns:1fr 1fr;padding:4px;background:#f2f4fa;border-radius:11px;margin-bottom:20px}.auth-mode{border:0;border-radius:8px;background:transparent;padding:9px;color:#7c879d;font-size:12px;font-weight:750}.auth-mode.active{background:#fff;color:#5268df;box-shadow:0 2px 8px #25375c0b}.modal-card form{display:grid;gap:8px}.modal-card label{font-size:11px;font-weight:750;color:#59667d;margin-top:5px}.modal-card input{width:100%;border:1px solid #dfe5f0;border-radius:10px;padding:12px;outline:0;font-size:12px}.modal-card input:focus{border-color:#8c9aff;box-shadow:0 0 0 3px #6379f21a}.auth-submit{width:100%;margin-top:10px}.auth-message{font-size:11px;line-height:1.7;color:#b94f49;margin:0;min-height:0}.auth-message.success{color:#27855d}.auth-footnote{font-size:10px;line-height:1.7;color:#929caf;margin:15px 0 0}.toast{position:fixed;z-index:40;left:50%;bottom:25px;transform:translate(-50%,15px);background:#202c45;color:#fff;border-radius:12px;padding:11px 17px;font-size:12px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .2s;max-width:calc(100% - 30px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.hidden{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:1050px){.hero{gap:35px;padding-left:6vw;padding-right:6vw}.section{padding-left:6vw;padding-right:6vw}.course-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-code{max-width:500px}.quiz-section{gap:30px}.cta-section{margin-left:6vw;margin-right:6vw}}@media(max-width:720px){.topbar{height:66px;padding:0 18px}.desktop-nav{display:none}.user-status{display:none}.brand{font-size:16px}.brand-mark{width:34px;height:34px}.top-actions{gap:7px}.button-light{font-size:11px;padding:9px 10px}.hero{grid-template-columns:1fr;padding:58px 22px 54px;gap:40px}.hero h1{font-size:48px}.hero-copy>p{font-size:13px}.hero-stats{margin-top:30px}.hero-code{width:calc(100% - 10px);margin:0 auto;transform:none}.badge-top{right:-8px}.badge-bottom{left:-8px}.section{padding:55px 20px}.section-heading{align-items:start;flex-direction:column}.section-heading h2,.lesson-panel h2,.quiz-intro h2{font-size:29px}.search-box{width:100%}.course-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.course-card{padding:15px 13px;min-height:215px}.course-card h3{font-size:14px}.course-card p{font-size:10px}.split-section{grid-template-columns:1fr;gap:28px}.progress-card{width:100%}.playground{grid-template-columns:1fr}.editor-side textarea{min-height:260px}.preview-side #preview-frame{min-height:270px}.quiz-section{grid-template-columns:1fr;gap:25px}.quiz-card{padding:19px}.quiz-card h3{font-size:15px}.cta-section{margin:0 20px 45px;padding:30px 24px;align-items:start;flex-direction:column}.cta-section h2{font-size:27px}.footer{padding:23px 20px;flex-wrap:wrap}.footer>span:nth-child(2){order:3;width:100%}}@media(max-width:380px){.course-grid{grid-template-columns:1fr}.hero h1{font-size:41px}.hero-actions{gap:13px;flex-wrap:wrap}.hero-stats{gap:21px}.editor-toolbar{padding:9px}.editor-tab{padding:7px}.small-button{font-size:9px}.modal-card{padding:24px}}
+
+/* =========================================
+   程式學院 - 完整網站樣式
+   ========================================= */
+
+:root {
+    --bg: #f6f8fc;
+    --white: #ffffff;
+    --dark: #17213a;
+    --text: #26334d;
+    --muted: #7b879c;
+    --primary: #6558e8;
+    --primary-dark: #5043d0;
+    --blue: #3885ef;
+    --border: #e5e9f2;
+    --light: #eef1ff;
+    --green: #1dbb83;
+    --red: #e65b70;
+    --shadow: 0 16px 45px rgba(36, 47, 86, .08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        Arial,
+        sans-serif;
+    line-height: 1.7;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* =========================================
+   導覽列
+   ========================================= */
+
+.topbar {
+    height: 76px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, .95);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(15px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+.brand-mark {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+    color: white;
+    background: linear-gradient(135deg, #7568f2, #3885ef);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.desktop-nav {
+    display: flex;
+    gap: 35px;
+}
+
+.desktop-nav a {
+    color: #65718a;
+    font-size: 14px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.desktop-nav a:hover {
+    color: var(--primary);
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-status {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+
+/* =========================================
+   按鈕
+   ========================================= */
+
+.button {
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 19px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: .2s;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.button-primary {
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--blue));
+    box-shadow: 0 7px 18px rgba(101, 88, 232, .2);
+}
+
+.button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(101, 88, 232, .3);
+}
+
+.button-light {
+    color: var(--primary);
+    background: var(--light);
+}
+
+.button-light:hover {
+    background: #e3e5ff;
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   首頁 Hero
+   ========================================= */
+
+.hero {
+    min-height: 590px;
+    padding: 90px 9%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 65px;
+    background:
+        radial-gradient(circle at 10% 10%, #eeeaff 0, transparent 40%),
+        radial-gradient(circle at 90% 90%, #e3efff 0, transparent 40%),
+        white;
+}
+
+.hero-copy {
+    max-width: 580px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 5px rgba(29, 187, 131, .12);
+}
+
+.hero h1 {
+    color: var(--dark);
+    font-size: clamp(38px, 5vw, 60px);
+    line-height: 1.3;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #6558e8, #3389ed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero-copy > p {
+    color: #718099;
+    max-width: 470px;
+    font-size: 16px;
+    line-height: 2;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 32px;
+}
+
+.text-link {
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 55px;
+}
+
+.hero-stats div {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-stats strong {
+    color: var(--dark);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.hero-stats span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+
+/* =========================================
+   首頁程式碼裝飾
+   ========================================= */
+
+.hero-code {
+    position: relative;
+    background: #17213a;
+    color: #e9edff;
+    border-radius: 18px;
+    padding: 0 25px 25px;
+    box-shadow: 0 30px 70px rgba(27, 38, 77, .2);
+}
+
+.code-window-head {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 1px solid #34405b;
+    color: #9ba8c3;
+    font-size: 12px;
+}
+
+.window-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.window-dots i {
+    width: 9px;
+    height: 9px;
+    background: #f26b72;
+    border-radius: 50%;
+}
+
+.window-dots i:nth-child(2) {
+    background: #f3bf55;
+}
+
+.window-dots i:nth-child(3) {
+    background: #4bc99b;
+}
+
+.live-pill {
+    margin-left: auto;
+    color: #4dd6a4;
+}
+
+.code-lines {
+    padding: 30px 0;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 2.4;
+    overflow-x: auto;
+}
+
+.code-lines em {
+    color: #71809e;
+    font-style: normal;
+    margin-right: 15px;
+}
+
+.kw {
+    color: #bb9cff;
+}
+
+.str {
+    color: #8fddb5;
+}
+
+.fn {
+    color: #70c8ff;
+}
+
+.code-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #24304b;
+    border-radius: 10px;
+}
+
+.result-icon {
+    color: #4bd7a5;
+    font-size: 20px;
+}
+
+.code-result div {
+    display: flex;
+    flex-direction: column;
+}
+
+.code-result small {
+    color: #91a0bd;
+    font-size: 9px;
+}
+
+.code-result strong {
+    font-size: 13px;
+}
+
+.result-time {
+    margin-left: auto;
+    color: #91a0bd;
+    font-size: 11px;
+}
+
+.floating-badge {
+    position: absolute;
+    padding: 9px 14px;
+    border-radius: 9px;
+    background: white;
+    color: var(--primary);
+    box-shadow: var(--shadow);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.badge-top {
+    top: -20px;
+    right: -20px;
+}
+
+.badge-bottom {
+    bottom: -20px;
+    left: -20px;
+}
+
+
+/* =========================================
+   一般區塊
+   ========================================= */
+
+.section {
+    padding: 85px 9%;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.section-heading h2,
+.quiz-intro h2 {
+    color: var(--dark);
+    font-size: 32px;
+    line-height: 1.4;
+    margin-bottom: 9px;
+}
+
+.section-heading p,
+.quiz-intro p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 240px;
+    padding: 10px 14px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.search-box span {
+    color: var(--primary);
+    font-size: 22px;
+}
+
+.search-box input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   課程篩選
+   ========================================= */
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.filter-chip {
+    padding: 9px 17px;
+    border: 1px solid var(--border);
+    background: white;
+    color: #758198;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.filter-chip:hover,
+.filter-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+
+/* =========================================
+   課程卡片
+   ========================================= */
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.course-card {
+    padding: 25px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    transition: .25s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: #d4d0ff;
+}
+
+.course-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.course-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--light);
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+}
+
+.course-level {
+    color: var(--primary);
+    background: #f0efff;
+    border-radius: 20px;
+    padding: 5px 11px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.course-card h3 {
+    font-size: 21px;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.course-card > p {
+    color: var(--muted);
+    font-size: 13px;
+    min-height: 46px;
+}
+
+.course-progress {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 20px;
+}
+
+.course-progress-track,
+.progress-track {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #edf0f7;
+    margin-top: 8px;
+}
+
+.course-progress-track span,
+.progress-track span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary), var(--blue));
+    border-radius: inherit;
+    transition: width .3s;
+}
+
+.course-start {
+    width: 100%;
+    margin-top: 22px;
+}
+
+.empty-courses {
+    grid-column: 1 / -1;
+    padding: 35px;
+    text-align: center;
+    color: var(--muted);
+    background: white;
+    border-radius: 12px;
+}
+
+
+/* =========================================
+   課程教室與進度卡
+   ========================================= */
+
+.split-section {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    align-items: start;
+    gap: 35px;
+    background: #eef1fa;
+}
+
+.lesson-panel,
+.progress-card {
+    padding: 32px;
+    background: white;
+    border-radius: 17px;
+    border: 1px solid var(--border);
+}
+
+.lesson-panel h2 {
+    color: var(--dark);
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.lesson-panel > p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.lesson-content {
+    color: #59677f;
+    line-height: 2;
+    font-size: 14px;
+}
+
+.lesson-content h3 {
+    color: var(--dark);
+    margin: 18px 0 8px;
+}
+
+.lesson-example {
+    margin-top: 25px;
+}
+
+.lesson-example h4 {
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.lesson-content pre {
+    white-space: pre-wrap;
+    overflow-x: auto;
+    background: #17213a;
+    color: #dbe5ff;
+    padding: 18px;
+    border-radius: 10px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.lesson-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.lesson-navigation {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.lesson-navigation span {
+    margin-right: auto;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.small-button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.small-button:hover:not(:disabled) {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+
+/* =========================================
+   進度卡
+   ========================================= */
+
+.progress-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.progress-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--light);
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.mini-label {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.progress-card h3 {
+    color: var(--dark);
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.progress-card > p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.progress-numbers {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.progress-numbers strong {
+    font-size: 43px;
+    color: var(--primary);
+}
+
+.progress-numbers span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.progress-track {
+    height: 9px;
+    margin-top: 14px;
+}
+
+.progress-foot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.progress-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 25px 0;
+}
+
+.next-step {
+    display: flex;
+    gap: 13px;
+    align-items: start;
+}
+
+.next-icon {
+    color: var(--primary);
+    font-size: 25px;
+}
+
+.next-step strong {
+    color: var(--dark);
+    font-size: 13px;
+}
+
+.next-step p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+
+/* =========================================
+   程式編輯器
+   ========================================= */
+
+.editor-tag {
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.playground {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    overflow: hidden;
+    background: #17213a;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.editor-side {
+    min-width: 0;
+    border-right: 1px solid #34405b;
+}
+
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    border-bottom: 1px solid #34405b;
+}
+
+.editor-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.language-tab {
+    padding: 8px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #9ba8c3;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.language-tab:hover,
+.language-tab.active {
+    color: white;
+    background: #34405b;
+}
+
+.editor-toolbar .small-button {
+    background: #26334d;
+    color: #c3cee4;
+    border-color: #44516c;
+}
+
+#code-editor {
+    display: block;
+    width: 100%;
+    height: 340px;
+    padding: 22px;
+    resize: vertical;
+    outline: none;
+    border: 0;
+    background: #17213a;
+    color: #d9e3ff;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    tab-size: 4;
+}
+
+.editor-footer {
+    min-height: 62px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 18px;
+    border-top: 1px solid #34405b;
+    color: #9ba8c3;
+    font-size: 11px;
+}
+
+.editor-footer > span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4bd7a5;
+}
+
+.run-button {
+    padding: 9px 16px;
+}
+
+
+/* =========================================
+   預覽區
+   ========================================= */
+
+.preview-side {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: white;
+}
+
+.preview-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px;
+    border-bottom: 1px solid var(--border);
+    color: var(--dark);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.preview-window-dots {
+    color: #c2c9d8;
+    letter-spacing: 3px;
+}
+
+#preview-frame {
+    display: block;
+    width: 100%;
+    height: 340px;
+    border: 0;
+    background: white;
+}
+
+.run-message {
+    min-height: 80px;
+    padding: 14px 17px;
+    color: #59677f;
+    background: #f6f8fc;
+    border-top: 1px solid var(--border);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.safety-note {
+    margin-top: 17px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+
+/* =========================================
+   小測驗
+   ========================================= */
+
+.quiz-section {
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 55px;
+    align-items: center;
+    background: #eef1fa;
+}
+
+.quiz-intro h2 {
+    font-size: 31px;
+}
+
+.quiz-meta {
+    display: flex;
+    gap: 18px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 25px;
+}
+
+.quiz-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+}
+
+.quiz-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.quiz-top span:last-child {
+    color: var(--muted);
+    letter-spacing: 1px;
+}
+
+.quiz-card h3 {
+    color: var(--dark);
+    font-size: 19px;
+    margin: 25px 0;
+}
+
+.quiz-options {
+    display: grid;
+    gap: 10px;
+}
+
+.quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 9px;
+    font-size: 13px;
+    transition: .2s;
+}
+
+.quiz-option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: #f7f6ff;
+}
+
+.option-letter {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: #f0f1f8;
+    color: var(--muted);
+    font-weight: 800;
+}
+
+.quiz-option.correct {
+    border-color: var(--green);
+    background: #edfbf5;
+    color: #12875e;
+}
+
+.quiz-option.wrong {
+    border-color: var(--red);
+    background: #fff0f2;
+    color: #d3465e;
+}
+
+.quiz-feedback {
+    padding: 12px;
+    margin-top: 17px;
+    border-radius: 8px;
+    background: #f0f1ff;
+    color: var(--primary);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.quiz-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.quiz-bottom > span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+
+/* =========================================
+   結尾 CTA
+   ========================================= */
+
+.cta-section {
+    margin: 75px 9%;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #222b55, #5148a5);
+    color: white;
+}
+
+.cta-section .eyebrow {
+    color: #bcb7ff;
+}
+
+.cta-section h2 {
+    font-size: 30px;
+    line-height: 1.5;
+}
+
+.cta-section p {
+    margin-top: 12px;
+    color: #c6cce4;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   Footer
+   ========================================= */
+
+.footer {
+    padding: 28px 9%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    background: white;
+    border-top: 1px solid var(--border);
+}
+
+.footer > span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+
+/* =========================================
+   登入註冊視窗
+   ========================================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, .65);
+    backdrop-filter: blur(5px);
+}
+
+.modal-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 420px);
+    padding: 35px;
+    background: white;
+    border-radius: 17px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, .2);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: #f0f1f8;
+    color: #64718a;
+    font-size: 22px;
+}
+
+.modal-logo {
+    margin-bottom: 15px;
+}
+
+.modal-card h2 {
+    color: var(--dark);
+    font-size: 23px;
+}
+
+.modal-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.auth-switch {
+    display: flex;
+    gap: 8px;
+    padding: 5px;
+    margin: 23px 0;
+    border-radius: 9px;
+    background: #f1f2f8;
+}
+
+.auth-mode {
+    flex: 1;
+    border: 0;
+    padding: 10px;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.auth-mode.active {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+}
+
+#auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#auth-form label {
+    margin: 12px 0 7px;
+    color: var(--dark);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#auth-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+}
+
+#auth-form input:focus {
+    border-color: var(--primary);
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 22px;
+}
+
+.auth-message {
+    min-height: 20px;
+    margin-top: 12px;
+    color: var(--red);
+    font-size: 12px;
+}
+
+.auth-footnote {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.8;
+    margin-top: 15px;
+}
+
+
+/* =========================================
+   Toast 提示
+   ========================================= */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 25px;
+    z-index: 900;
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: #202b48;
+    color: white;
+    font-size: 13px;
+    box-shadow: var(--shadow);
+    transition: .25s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+
+/* =========================================
+   平板
+   ========================================= */
+
+@media (max-width: 1000px) {
+    .hero {
+        padding: 70px 6%;
+        gap: 35px;
+    }
+
+    .section {
+        padding: 70px 6%;
+    }
+
+    .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .playground {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-side {
+        border-right: 0;
+        border-bottom: 1px solid #34405b;
+    }
+
+    .quiz-section {
+        gap: 30px;
+    }
+}
+
+
+/* =========================================
+   手機
+   ========================================= */
+
+@media (max-width: 680px) {
+    .topbar {
+        height: auto;
+        min-height: 68px;
+        padding: 12px 5%;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .brand {
+        font-size: 17px;
+    }
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+    }
+
+    .desktop-nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 28px;
+        padding-top: 5px;
+    }
+
+    .desktop-nav a {
+        font-size: 12px;
+    }
+
+    .top-actions {
+        gap: 7px;
+    }
+
+    .user-status {
+        font-size: 10px;
+    }
+
+    .top-actions .button {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 65px 6%;
+        gap: 55px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero-copy > p {
+        font-size: 14px;
+    }
+
+    .hero-stats {
+        gap: 25px;
+        margin-top: 35px;
+    }
+
+    .hero-code {
+        padding: 0 15px 18px;
+    }
+
+    .code-lines {
+        font-size: 11px;
+    }
+
+    .floating-badge {
+        font-size: 10px;
+    }
+
+    .section {
+        padding: 55px 5%;
+    }
+
+    .section-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .section-heading h2,
+    .quiz-intro h2 {
+        font-size: 26px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .split-section {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-panel,
+    .progress-card {
+        padding: 22px;
+    }
+
+    .lesson-panel h2 {
+        font-size: 23px;
+    }
+
+    .editor-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .editor-tabs {
+        width: 100%;
+    }
+
+    .language-tab {
+        flex: 1;
+        padding: 9px 5px;
+        font-size: 10px;
+    }
+
+    #code-editor {
+        height: 290px;
+        padding: 15px;
+        font-size: 12px;
+    }
+
+    #preview-frame {
+        height: 280px;
+    }
+
+    .editor-footer {
+        padding: 10px;
+    }
+
+    .quiz-section {
+        grid-template-columns: 1fr;
+    }
+
+    .quiz-card {
+        padding: 20px;
+    }
+
+    .quiz-card h3 {
+        font-size: 16px;
+    }
+
+    .quiz-top {
+        flex-wrap: wrap;
+    }
+
+    .cta-section {
+        margin: 35px 5%;
+        padding: 30px 22px;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .cta-section h2 {
+        font-size: 25px;
+    }
+
+    .footer {
+        padding: 25px 5%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modal-card {
+        padding: 27px 22px;
+    }
+}
+
+
+/* =========================================
+   小螢幕
+   ========================================= */
+
+@media (max-width: 380px) {
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .hero-actions {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hero-stats {
+        gap: 18px;
+    }
+
+    .hero-stats strong {
+        font-size: 21px;
+    }
+
+    .quiz-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
