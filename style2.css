@@ -1,0 +1,785 @@
+
+/* =====================================
+   六軌節奏遊戲 - 完整 CSS
+   ===================================== */
+
+
+/* ===== 全域設定 ===== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #080b18;
+    --panel: #11182d;
+    --panel-light: #192440;
+    --primary: #7c5cff;
+    --primary-light: #a78bfa;
+    --cyan: #35d9ff;
+    --pink: #ff4fa3;
+    --green: #38e8a5;
+    --yellow: #ffd166;
+    --text: #f5f7ff;
+    --muted: #9ba8c7;
+    --border: rgba(255, 255, 255, 0.1);
+    --shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        "Segoe UI",
+        "Microsoft JhengHei",
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(124, 92, 255, 0.2),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(53, 217, 255, 0.12),
+            transparent 35%
+        ),
+        var(--bg);
+
+    overflow-x: hidden;
+}
+
+
+/* ===== 主容器 ===== */
+
+.app {
+    width: min(1100px, 94%);
+    margin: 0 auto;
+    padding: 35px 0 25px;
+}
+
+
+/* ===== 頁面標題 ===== */
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.top h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 900;
+    letter-spacing: 2px;
+
+    background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--primary-light),
+        var(--pink)
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.eyebrow {
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+}
+
+.sub {
+    color: var(--muted);
+    margin-top: 8px;
+    font-size: 15px;
+}
+
+.top-score {
+    min-width: 125px;
+    padding: 15px 20px;
+    text-align: center;
+
+    background: rgba(124, 92, 255, 0.13);
+    border: 1px solid rgba(124, 92, 255, 0.4);
+    border-radius: 16px;
+
+    box-shadow: 0 0 25px rgba(124, 92, 255, 0.12);
+}
+
+.top-score span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.top-score strong {
+    display: block;
+    color: var(--yellow);
+    font-size: 30px;
+    margin-top: 5px;
+    font-weight: 900;
+}
+
+
+/* ===== 面板 ===== */
+
+.panel {
+    background: linear-gradient(
+        145deg,
+        rgba(25, 36, 64, 0.96),
+        rgba(14, 20, 39, 0.97)
+    );
+
+    border: 1px solid var(--border);
+    border-radius: 22px;
+
+    padding: 28px;
+
+    box-shadow: var(--shadow);
+
+    margin-bottom: 22px;
+
+    animation: panelIn 0.35s ease;
+}
+
+@keyframes panelIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel h2 {
+    font-size: 25px;
+    margin-bottom: 22px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.center {
+    text-align: center;
+}
+
+
+/* ===== 設定區域 ===== */
+
+.settings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 25px 0;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+input,
+select {
+    width: 100%;
+    min-width: 0;
+
+    padding: 12px 14px;
+
+    color: var(--text);
+    background: #0c1327;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary-light);
+
+    box-shadow:
+        0 0 0 3px rgba(124, 92, 255, 0.15);
+}
+
+input[type="file"] {
+    cursor: pointer;
+}
+
+select {
+    cursor: pointer;
+}
+
+select option {
+    background: #11182d;
+    color: white;
+}
+
+
+/* ===== 提示文字 ===== */
+
+.hint {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 12px 0;
+}
+
+.muted {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+
+/* ===== 按鈕 ===== */
+
+button {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+
+    background: #202d4d;
+    color: white;
+
+    padding: 12px 19px;
+
+    border-radius: 11px;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+
+    user-select: none;
+}
+
+button:hover {
+    transform: translateY(-2px);
+
+    background: #30436e;
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, 0.25);
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.primary {
+    background: linear-gradient(
+        100deg,
+        #6846f5,
+        #9a5cff
+    );
+
+    border: none;
+
+    box-shadow:
+        0 6px 20px rgba(124, 92, 255, 0.25);
+}
+
+.primary:hover {
+    background: linear-gradient(
+        100deg,
+        #8065ff,
+        #b077ff
+    );
+}
+
+.danger {
+    background: #7f2946;
+    border-color: rgba(255, 79, 163, 0.35);
+}
+
+.danger:hover {
+    background: #a12e58;
+}
+
+
+/* ===== 按鈕排列 ===== */
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+
+/* ===== 操作說明 ===== */
+
+.help {
+    margin-top: 25px;
+
+    padding: 15px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.help summary {
+    color: var(--cyan);
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.help p {
+    color: var(--muted);
+    line-height: 1.9;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+kbd {
+    display: inline-block;
+
+    padding: 3px 8px;
+
+    color: white;
+    background: #27375c;
+
+    border-radius: 5px;
+    border: 1px solid #52648f;
+
+    font-weight: 900;
+}
+
+
+/* =====================================
+   遊戲畫面
+   ===================================== */
+
+.game-head {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.game-head > div {
+    padding: 13px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.game-head strong {
+    display: block;
+
+    color: var(--cyan);
+    font-size: 23px;
+    font-weight: 900;
+}
+
+
+/* ===== Canvas 外框 ===== */
+
+.stage-wrap {
+    width: 100%;
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    padding: 8px;
+
+    background: #050916;
+
+    border: 1px solid rgba(53, 217, 255, 0.35);
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 25px rgba(53, 217, 255, 0.08);
+}
+
+#stage {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    background: #080d1c;
+
+    border-radius: 9px;
+}
+
+
+/* ===== 遊戲控制 ===== */
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.game-controls button {
+    min-width: 110px;
+}
+
+
+/* ===== 手機按鍵 ===== */
+
+.mobile-hint {
+    display: none;
+
+    text-align: center;
+    color: var(--muted);
+
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.touch-keys {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+.touch-keys button {
+    padding: 18px 5px;
+
+    font-size: 20px;
+    font-weight: 900;
+
+    border-radius: 10px;
+
+    background: #26375f;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    touch-action: none;
+}
+
+.touch-keys button:nth-child(1) {
+    background: #176d9b;
+}
+
+.touch-keys button:nth-child(2) {
+    background: #8a3eb2;
+}
+
+.touch-keys button:nth-child(3) {
+    background: #b33f75;
+}
+
+.touch-keys button:nth-child(4) {
+    background: #b36c28;
+}
+
+.touch-keys button:nth-child(5) {
+    background: #288c6c;
+}
+
+.touch-keys button:nth-child(6) {
+    background: #4057a5;
+}
+
+.touch-keys button:active {
+    filter: brightness(1.5);
+    transform: scale(0.95);
+}
+
+
+/* =====================================
+   遊戲結算畫面
+   ===================================== */
+
+#result {
+    padding: 45px 25px;
+}
+
+#result h2 {
+    font-size: 34px;
+    margin-bottom: 25px;
+}
+
+#result p {
+    color: var(--muted);
+    margin: 12px 0;
+}
+
+.result-score {
+    font-size: clamp(48px, 10vw, 75px);
+
+    font-weight: 1000;
+
+    color: var(--yellow);
+
+    text-shadow:
+        0 0 15px rgba(255, 209, 102, 0.4),
+        0 0 35px rgba(255, 209, 102, 0.15);
+
+    margin: 8px 0 25px;
+}
+
+#resultBestScore {
+    color: var(--cyan);
+    font-size: 42px;
+
+    text-shadow:
+        0 0 20px rgba(53, 217, 255, 0.35);
+
+    margin: 10px 0 20px;
+}
+
+#recordMessage {
+    color: var(--green);
+    font-size: 21px;
+    margin: 20px 0;
+}
+
+#resultSummary {
+    line-height: 1.8;
+}
+
+#result .actions {
+    justify-content: center;
+    margin-top: 30px;
+}
+
+
+/* =====================================
+   譜面編輯器
+   ===================================== */
+
+.chart-preview {
+    min-height: 100px;
+
+    padding: 15px;
+
+    margin-top: 20px;
+
+    background: #080e20;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    color: var(--cyan);
+
+    line-height: 2;
+    overflow-wrap: anywhere;
+}
+
+
+/* =====================================
+   成績紀錄
+   ===================================== */
+
+.records-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin: 20px 0;
+}
+
+.records-list > div,
+.records-list > p {
+    padding: 15px;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    color: var(--text);
+}
+
+
+/* =====================================
+   雲端帳號
+   ===================================== */
+
+.account-row {
+    display: grid;
+
+    grid-template-columns: 2fr 1.5fr auto auto auto;
+
+    gap: 10px;
+    align-items: center;
+}
+
+.account-row button {
+    white-space: nowrap;
+}
+
+#accountStatus {
+    margin-top: 15px;
+}
+
+
+/* =====================================
+   頁尾
+   ===================================== */
+
+footer {
+    padding: 25px 0;
+
+    text-align: center;
+
+    color: #667391;
+
+    font-size: 13px;
+}
+
+
+/* =====================================
+   手機版
+   ===================================== */
+
+@media (max-width: 750px) {
+
+    .app {
+        width: 94%;
+        padding-top: 20px;
+    }
+
+    .top {
+        align-items: flex-start;
+    }
+
+    .top h1 {
+        font-size: 28px;
+    }
+
+    .top-score {
+        min-width: 90px;
+        padding: 12px;
+    }
+
+    .top-score strong {
+        font-size: 24px;
+    }
+
+    .settings {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        padding: 20px;
+        border-radius: 17px;
+    }
+
+    .game-head {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mobile-hint {
+        display: block;
+    }
+
+    .touch-keys {
+        gap: 5px;
+    }
+
+    .touch-keys button {
+        padding: 16px 2px;
+        font-size: 16px;
+    }
+
+    .account-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .account-row input {
+        grid-column: span 2;
+    }
+
+    .account-row button {
+        width: 100%;
+    }
+
+    .actions button {
+        flex: 1 1 140px;
+    }
+
+}
+
+
+/* =====================================
+   小螢幕手機
+   ===================================== */
+
+@media (max-width: 420px) {
+
+    .top {
+        flex-direction: column;
+    }
+
+    .top-score {
+        width: 100%;
+    }
+
+    .top h1 {
+        font-size: 25px;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+    .game-head strong {
+        font-size: 19px;
+    }
+
+    .touch-keys button {
+        padding: 14px 1px;
+        font-size: 14px;
+    }
+
+    .game-controls button {
+        min-width: 0;
+        flex: 1;
+    }
+
+    #result h2 {
+        font-size: 27px;
+    }
+
+}
