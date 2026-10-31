@@ -1,0 +1,438 @@
+
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>六軌節奏遊戲</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<main class="app">
+
+    <!-- ===== 頁面標題 ===== -->
+    <header class="top">
+
+        <div>
+            <p class="eyebrow">SIX LANE RHYTHM</p>
+
+            <h1>六軌節奏遊戲</h1>
+
+            <p class="sub">
+                選擇音樂，跟著節奏按下六個按鍵！
+            </p>
+        </div>
+
+        <div class="top-score">
+            <span>最高分</span>
+            <strong id="bestScore">0</strong>
+        </div>
+
+    </header>
+
+
+    <!-- ===== 遊戲大廳 ===== -->
+    <section id="lobby" class="panel">
+
+        <h2>遊戲大廳</h2>
+
+        <div class="settings">
+
+            <label>
+                選擇音樂
+
+                <input
+                    id="musicFile"
+                    type="file"
+                    accept="audio/*"
+                >
+            </label>
+
+
+            <label>
+                難度
+
+                <select id="difficulty">
+
+                    <option value="easy">初級</option>
+
+                    <option value="normal" selected>
+                        中級
+                    </option>
+
+                    <option value="hard">高級</option>
+
+                </select>
+            </label>
+
+
+            <label>
+                譜面模式
+
+                <select id="chartMode">
+
+                    <option value="auto">
+                        自動產生譜面
+                    </option>
+
+                    <option value="manual">
+                        使用手動譜面
+                    </option>
+
+                </select>
+            </label>
+
+        </div>
+
+
+        <p id="musicName" class="hint">
+            尚未選擇音樂。也可以先按「試玩示範」體驗。
+        </p>
+
+
+        <div class="actions">
+
+            <button id="startBtn" class="primary">
+                開始遊戲
+            </button>
+
+            <button id="demoBtn">
+                試玩示範
+            </button>
+
+            <button id="editorBtn">
+                譜面編輯器
+            </button>
+
+            <button id="recordsBtn">
+                成績紀錄
+            </button>
+
+        </div>
+
+
+        <details class="help">
+
+            <summary>遊戲操作說明</summary>
+
+            <p>
+                六軌按鍵：
+                <kbd>D</kbd>
+                <kbd>F</kbd>
+                <kbd>J</kbd>
+                <kbd>K</kbd>
+                <kbd>L</kbd>
+                <kbd>;</kbd>。
+                音符到達底部判定線時按下對應按鍵。
+                按住長條音符直到結束。
+            </p>
+
+            <p>
+                支援 MP3、WAV、OGG 等瀏覽器可播放的音訊格式。
+                音樂只在你的瀏覽器本機播放，不會自動上傳。
+            </p>
+
+        </details>
+
+    </section>
+
+
+
+    <!-- ===== 遊戲畫面 ===== -->
+    <section id="game" class="panel hidden">
+
+        <div class="game-head">
+
+            <div>
+                <span class="muted">分數</span>
+                <strong id="score">0</strong>
+            </div>
+
+            <div>
+                <span class="muted">連擊</span>
+                <strong id="combo">0</strong>
+            </div>
+
+            <div>
+                <span class="muted">判定</span>
+                <strong id="judgement">READY</strong>
+            </div>
+
+            <div>
+                <span class="muted">準確率</span>
+                <strong id="accuracy">100%</strong>
+            </div>
+
+        </div>
+
+
+        <div class="stage-wrap">
+
+            <canvas
+                id="stage"
+                width="720"
+                height="760"
+                aria-label="六軌音樂遊戲畫面">
+            </canvas>
+
+        </div>
+
+
+        <div class="game-controls">
+
+            <button id="pauseBtn">
+                暫停
+            </button>
+
+            <button id="quitBtn">
+                結束遊戲
+            </button>
+
+        </div>
+
+
+        <p class="mobile-hint">
+            手機可直接點擊下方六個按鍵區。
+        </p>
+
+
+        <div id="touchKeys" class="touch-keys">
+
+            <button data-lane="0">D</button>
+
+            <button data-lane="1">F</button>
+
+            <button data-lane="2">J</button>
+
+            <button data-lane="3">K</button>
+
+            <button data-lane="4">L</button>
+
+            <button data-lane="5">;</button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===== 暫停畫面 ===== -->
+    <section id="pause" class="panel hidden center">
+
+        <h2>遊戲暫停</h2>
+
+        <button
+            id="resumeBtn"
+            class="primary">
+            繼續
+        </button>
+
+    </section>
+
+
+
+    <!-- ===== 遊戲結算畫面 ===== -->
+    <section id="result" class="panel hidden center">
+
+        <p class="eyebrow">RESULT</p>
+
+        <h2>遊戲結束</h2>
+
+
+        <!-- 本次分數 -->
+        <p>本次分數</p>
+
+        <div
+            class="result-score"
+            id="finalScore">
+            0
+        </div>
+
+
+        <!-- 歷史最高分數 -->
+        <p>歷史最高分數</p>
+
+        <h1 id="resultBestScore">
+            0
+        </h1>
+
+
+        <!-- 是否刷新紀錄 -->
+        <h3 id="recordMessage"></h3>
+
+
+        <!-- 結算資訊 -->
+        <p id="resultSummary"></p>
+
+
+        <div class="actions">
+
+            <button
+                id="againBtn"
+                class="primary">
+                再玩一次
+            </button>
+
+            <button id="homeBtn">
+                返回大廳
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===== 手動譜面編輯器 ===== -->
+    <section id="editor" class="panel hidden">
+
+        <h2>手動譜面編輯器</h2>
+
+        <p class="hint">
+            選擇音樂後按「開始編輯」。
+            播放時按 D、F、J、K、L、;，
+            會在當下音樂時間加入音符。
+            此編輯器先支援單點音符。
+        </p>
+
+
+        <div class="actions">
+
+            <button
+                id="recordChartBtn"
+                class="primary">
+                開始編輯／錄製
+            </button>
+
+            <button id="stopChartBtn">
+                停止
+            </button>
+
+            <button id="saveChartBtn">
+                儲存譜面
+            </button>
+
+            <button id="backLobbyBtn">
+                返回大廳
+            </button>
+
+        </div>
+
+
+        <p id="editorStatus" class="hint">
+            尚未開始。
+        </p>
+
+
+        <div
+            id="chartPreview"
+            class="chart-preview">
+        </div>
+
+    </section>
+
+
+
+    <!-- ===== 成績紀錄 ===== -->
+    <section id="records" class="panel hidden">
+
+        <h2>成績紀錄</h2>
+
+        <div
+            id="recordsList"
+            class="records-list">
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                id="clearRecordsBtn"
+                class="danger">
+                清除本機紀錄
+            </button>
+
+            <button id="recordsHomeBtn">
+                返回大廳
+            </button>
+
+        </div>
+
+
+        <p class="hint">
+            本機紀錄保存在這台裝置的瀏覽器。
+            設定 Supabase 後，登入使用者的成績也會同步到雲端。
+        </p>
+
+    </section>
+
+
+
+    <!-- ===== 雲端帳號 ===== -->
+    <section id="account" class="panel">
+
+        <h2>雲端帳號（選用）</h2>
+
+
+        <div class="account-row">
+
+            <input
+                id="email"
+                type="email"
+                placeholder="電子郵件"
+            >
+
+            <input
+                id="password"
+                type="password"
+                placeholder="密碼"
+            >
+
+            <button id="signUpBtn">
+                註冊
+            </button>
+
+            <button id="signInBtn">
+                登入
+            </button>
+
+            <button id="signOutBtn">
+                登出
+            </button>
+
+        </div>
+
+
+        <p id="accountStatus" class="hint">
+            未設定 Supabase，仍可完整遊玩並儲存本機紀錄。
+        </p>
+
+    </section>
+
+
+
+    <!-- ===== 頁尾 ===== -->
+    <footer>
+        六軌節奏遊戲 · HTML / CSS / JavaScript
+    </footer>
+
+</main>
+
+
+
+<!-- ===== 音樂播放器 ===== -->
+<audio id="audio" preload="auto"></audio>
+
+
+<!-- ===== 遊戲 JavaScript ===== -->
+<script src="game.js"></script>
+
+</body>
+</html>
