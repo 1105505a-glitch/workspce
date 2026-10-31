@@ -390,15 +390,18 @@ function renderCourses() {
     });
 }
 
-function openCourse(courseId) {
+function openCourse(courseId, shouldScroll = true ) {
     currentCourse = courses.find(course => course.id === courseId);
     currentLessonIndex = 0;
 
     renderLesson();
-
-    document.querySelector("#lesson").scrollIntoView({
+    if {
+        document.querySelector("#lesson").scrollIntoView({
         behavior: "smooth"
     });
+
+    }
+    
 }
 
 /* =====================================
@@ -1072,7 +1075,7 @@ function init() {
     attachEvents();
 
     // 預設顯示第一堂 Python 課程
-    openCourse("python");
+    openCourse("python", false);
 
     console.log("程式學院已成功啟動！");
 }
