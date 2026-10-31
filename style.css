@@ -50,16 +50,14 @@ button {
     display: none !important;
 }
 
-/* 導覽列 */
-
 .topbar {
-    height: 72px;
+    min-height: 72px;
     padding: 0 6%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    background: rgba(255,255,255,.94);
+    background: rgba(255,255,255,.96);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -104,8 +102,6 @@ button {
     font-size: 13px;
 }
 
-/* 按鈕 */
-
 .btn {
     display: inline-flex;
     align-items: center;
@@ -118,12 +114,17 @@ button {
     transition: .2s;
 }
 
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+}
+
 .btn-primary {
     color: white;
     background: var(--primary);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
     background: var(--primary-dark);
     transform: translateY(-1px);
 }
@@ -134,7 +135,7 @@ button {
     background: white;
 }
 
-.btn-outline:hover {
+.btn-outline:hover:not(:disabled) {
     border-color: var(--primary);
     color: var(--primary);
 }
@@ -143,10 +144,8 @@ button {
     width: 100%;
 }
 
-/* 首頁 */
-
 .hero {
-    min-height: 520px;
+    min-height: 540px;
     padding: 75px 8%;
     display: grid;
     grid-template-columns: 1.15fr .85fr;
@@ -184,6 +183,7 @@ button {
     display: flex;
     gap: 12px;
     margin-top: 28px;
+    flex-wrap: wrap;
 }
 
 .hero-stats {
@@ -246,7 +246,7 @@ button {
 
 .hero-code pre {
     padding: 20px 25px;
-    font: 14px/2 monospace;
+    font: 14px/2 Consolas, monospace;
     overflow: auto;
 }
 
@@ -267,13 +267,12 @@ button {
 
 .code-result strong {
     color: #9de6ae;
-    font: 14px monospace;
+    font: 14px/1.8 Consolas, monospace;
 }
-
-/* 通用區塊 */
 
 .section {
     padding: 75px 8%;
+    scroll-margin-top: 80px;
 }
 
 .section-soft {
@@ -303,8 +302,6 @@ button {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
 }
-
-/* 課程 */
 
 .course-tools {
     display: flex;
@@ -380,7 +377,7 @@ textarea:focus {
     border-radius: 13px;
     background: #efedff;
     color: var(--primary);
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 800;
 }
 
@@ -394,10 +391,7 @@ textarea:focus {
     min-height: 44px;
 }
 
-.course-card .course-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.course-info {
     color: var(--muted);
     font-size: 12px;
 }
@@ -406,8 +400,6 @@ textarea:focus {
     width: 100%;
     margin-top: 15px;
 }
-
-/* 教室 */
 
 .lesson-layout {
     display: grid;
@@ -441,6 +433,7 @@ textarea:focus {
 .lesson-content {
     margin: 25px 0;
     line-height: 1.9;
+    overflow-wrap: anywhere;
 }
 
 .lesson-content h4 {
@@ -506,8 +499,6 @@ textarea:focus {
     color: var(--muted);
     font-size: 12px;
 }
-
-/* 編輯器 */
 
 .playground {
     overflow: hidden;
@@ -606,15 +597,18 @@ textarea:focus {
     font: 13px/1.7 Consolas, monospace;
 }
 
+.preview-wrap {
+    margin-top: 18px;
+}
+
 .preview-wrap iframe {
+    display: block;
     width: 100%;
     min-height: 220px;
     border: 1px solid var(--border);
     border-radius: 10px;
     background: white;
 }
-
-/* 測驗 */
 
 .quiz-panel {
     max-width: 760px;
@@ -654,6 +648,10 @@ textarea:focus {
     border-color: var(--primary);
 }
 
+.quiz-option:disabled {
+    cursor: default;
+}
+
 .quiz-option.correct {
     border-color: #22a06b;
     background: #eaf8f1;
@@ -674,8 +672,6 @@ textarea:focus {
     padding-top: 18px;
 }
 
-/* 頁尾 */
-
 .footer {
     padding: 35px 8%;
     display: flex;
@@ -685,8 +681,6 @@ textarea:focus {
     color: var(--muted);
     font-size: 12px;
 }
-
-/* 登入視窗 */
 
 .modal {
     position: fixed;
@@ -783,8 +777,6 @@ textarea:focus {
     transform: translate(-50%, 0);
 }
 
-/* 手機版 */
-
 @media (max-width: 900px) {
     .hero {
         grid-template-columns: 1fr;
@@ -802,7 +794,6 @@ textarea:focus {
 
 @media (max-width: 650px) {
     .topbar {
-        height: auto;
         min-height: 65px;
         padding: 12px 5%;
         flex-wrap: wrap;
@@ -876,9 +867,5 @@ textarea:focus {
     .footer {
         flex-direction: column;
         text-align: center;
-    }
-
-    .hero-actions {
-        flex-wrap: wrap;
     }
 }

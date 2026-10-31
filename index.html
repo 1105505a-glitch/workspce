@@ -3,270 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="互動式程式教學網站，學習 Python、C++、HTML、CSS 和 JavaScript。">
+    <meta name="description" content="程式學院：學習 Python、C++、HTML、CSS 和 JavaScript 的互動式程式教學網站。">
     <title>程式學院｜互動式程式教學</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- Python 執行環境 -->
+    <!-- Python 瀏覽器執行環境 -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js"></script>
+
+    <!-- 自己的 JavaScript -->
+    <script src="app.js" defer></script>
 </head>
 
 <body>
-<header class="topbar">
-    <a class="brand" href="#">
-        <span class="brand-icon">⌘</span>
-        <span>程式學院</span>
-    </a>
 
-    <nav class="desktop-nav">
-        <a href="#courses">課程</a>
-        <a href="#lesson">學習教室</a>
-        <a href="#playground">程式練習</a>
-        <a href="#quiz">測驗</a>
-    </nav>
+    <!-- 導覽列 -->
+    <header class="topbar">
+        <a class="brand" href="#home">
+            <span class="brand-icon">⌘</span>
+            <span>程式學院</span>
+        </a>
 
-    <div class="top-actions">
-        <span id="user-status">尚未登入</span>
-        <button id="auth-open" class="btn btn-primary">登入 / 註冊</button>
-        <button id="signout" class="btn btn-outline hidden">登出</button>
-    </div>
-</header>
+        <nav class="desktop-nav">
+            <a href="#courses">課程</a>
+            <a href="#lesson">學習教室</a>
+            <a href="#playground">程式練習</a>
+            <a href="#quiz">測驗</a>
+        </nav>
 
-<main>
-    <!-- 首頁 -->
-    <section class="hero">
-        <div class="hero-copy">
-            <span class="eyebrow">LEARN · CODE · CREATE</span>
-            <h1>從學習開始，<br><span>寫出自己的程式世界。</span></h1>
-            <p>
-                透過互動課程、程式練習與即時測驗，
-                一步一步學會 Python、C++、HTML、CSS 和 JavaScript。
-            </p>
-            <div class="hero-actions">
-                <a href="#courses" class="btn btn-primary">開始學習</a>
-                <a href="#playground" class="btn btn-outline">開始寫程式</a>
-            </div>
-            <div class="hero-stats">
-                <div><strong>5</strong><span>教學語言</span></div>
-                <div><strong>15+</strong><span>學習單元</span></div>
-                <div><strong>24/7</strong><span>隨時練習</span></div>
-            </div>
+        <div class="top-actions">
+            <span id="user-status">尚未登入</span>
+            <button id="auth-open" class="btn btn-primary">登入 / 註冊</button>
+            <button id="signout" class="btn btn-outline hidden">登出</button>
         </div>
+    </header>
 
-        <div class="hero-code">
-            <div class="code-window-head">
-                <div class="window-dots"><i></i><i></i><i></i></div>
-                <span>hello_world.py</span>
-            </div>
-            <pre><code><span class="code-purple">def</span> <span class="code-yellow">hello</span>():
-    message = <span class="code-green">"Hello, World!"</span>
-    <span class="code-blue">print</span>(message)
+    <main>
 
-hello()
+        <!-- 首頁 -->
+        <section class="hero" id="home">
+            <div class="hero-copy">
+                <span class="eyebrow">WELCOME TO PROGRAMMING SCHOOL</span>
 
-<span class="code-comment"># 開始你的程式旅程</span></code></pre>
-            <div class="code-result">
-                <span>執行結果</span>
-                <strong>Hello, World!</strong>
-            </div>
-        </div>
-    </section>
+                <h1>
+                    從零開始，<br>
+                    <span>學會程式設計</span>
+                </h1>
 
-    <!-- 課程 -->
-    <section id="courses" class="section">
-        <div class="section-heading">
-            <div>
-                <span class="eyebrow">COURSES</span>
-                <h2>選擇你的學習課程</h2>
-                <p>從基礎開始，逐步建立程式設計能力。</p>
-            </div>
-        </div>
+                <p>
+                    透過互動式課程與線上程式練習，
+                    學習 Python、C++、HTML、CSS 和 JavaScript。
+                </p>
 
-        <div class="course-tools">
-            <input id="course-search" type="search" placeholder="搜尋課程名稱...">
-            <div id="course-filters" class="filter-list">
-                <button class="filter-chip active" data-filter="all">全部</button>
-                <button class="filter-chip" data-filter="python">Python</button>
-                <button class="filter-chip" data-filter="cpp">C++</button>
-                <button class="filter-chip" data-filter="html">HTML</button>
-                <button class="filter-chip" data-filter="css">CSS</button>
-                <button class="filter-chip" data-filter="js">JavaScript</button>
-            </div>
-        </div>
-
-        <div id="course-grid" class="course-grid"></div>
-    </section>
-
-    <!-- 學習教室 -->
-    <section id="lesson" class="section section-soft">
-        <div class="section-heading">
-            <div>
-                <span class="eyebrow">CLASSROOM</span>
-                <h2>學習教室</h2>
-                <p>閱讀課程內容，完成後記錄學習進度。</p>
-            </div>
-        </div>
-
-        <div class="lesson-layout">
-            <article class="panel lesson-panel">
-                <div class="lesson-meta">
-                    <span id="lesson-language">PYTHON</span>
-                    <span id="lesson-number">第 1 堂</span>
-                </div>
-                <h3 id="lesson-title">歡迎來到程式學院</h3>
-                <p id="lesson-description">選擇一個課程開始學習。</p>
-                <div id="lesson-content" class="lesson-content">
-                    <p>請從上方課程卡片選擇課程。</p>
+                <div class="hero-actions">
+                    <a href="#courses" class="btn btn-primary">開始學習</a>
+                    <a href="#playground" class="btn btn-outline">立即寫程式</a>
                 </div>
 
-                <div class="lesson-actions">
-                    <button id="lesson-prev" class="btn btn-outline">上一堂</button>
-                    <button id="lesson-complete" class="btn btn-primary">完成本堂課</button>
-                    <button id="lesson-next" class="btn btn-outline">下一堂</button>
-                </div>
-                <p id="lesson-progress-note" class="small-note"></p>
-            </article>
-
-            <aside class="panel progress-panel">
-                <span class="eyebrow">YOUR PROGRESS</span>
-                <h3>學習進度</h3>
-                <div class="progress-number">
-                    <strong id="completed-count">0</strong>
-                    <span>堂已完成</span>
-                </div>
-                <div class="progress-track">
-                    <div id="progress-bar" class="progress-fill"></div>
-                </div>
-                <div class="progress-caption">
-                    <span id="progress-caption">尚未開始</span>
-                    <strong id="progress-percent">0%</strong>
-                </div>
-                <p class="small-note">完成課程後，系統會記錄在這台裝置。</p>
-            </aside>
-        </div>
-    </section>
-
-    <!-- 程式練習 -->
-    <section id="playground" class="section">
-        <div class="section-heading">
-            <div>
-                <span class="eyebrow">CODE PLAYGROUND</span>
-                <h2>線上程式練習</h2>
-                <p>選擇程式語言、輸入程式碼，再按下執行。</p>
-            </div>
-        </div>
-
-        <div class="playground panel">
-            <div class="editor-toolbar">
-                <div class="editor-tabs">
-                    <button class="language-tab active" data-language="python">Python</button>
-                    <button class="language-tab" data-language="cpp">C++</button>
-                    <button class="language-tab" data-language="html">HTML</button>
-                    <button class="language-tab" data-language="css">CSS</button>
-                    <button class="language-tab" data-language="js">JavaScript</button>
-                </div>
-                <button id="reset-code" class="btn btn-outline">重設程式碼</button>
-            </div>
-
-            <div class="editor-layout">
-                <div class="editor-column">
-                    <div class="editor-label">
-                        <span>程式碼編輯器</span>
-                        <span id="editor-language">Python</span>
+                <div class="hero-stats">
+                    <div>
+                        <strong>5</strong>
+                        <span>教學語言</span>
                     </div>
-                    <textarea id="code-editor" spellcheck="false"
-                        autocapitalize="off" autocomplete="off"
-                        aria-label="程式碼編輯器"></textarea>
-
-                    <div class="editor-actions">
-                        <button id="run-code" class="btn btn-primary">▶ 執行程式</button>
-                        <span id="run-message" role="status">準備就緒</span>
+                    <div>
+                        <strong>15+</strong>
+                        <span>教學課程</span>
                     </div>
-                </div>
-
-                <div class="output-column">
-                    <div class="output-label">執行結果</div>
-                    <pre id="code-output">執行結果會顯示在這裡。</pre>
-
-                    <div id="web-preview-wrap" class="preview-wrap hidden">
-                        <div class="output-label">網頁預覽</div>
-                        <iframe id="preview-frame"
-                            title="網頁程式預覽"
-                            sandbox="allow-scripts"></iframe>
+                    <div>
+                        <strong>100%</strong>
+                        <span>自主學習</span>
                     </div>
                 </div>
             </div>
+
+            <div class="hero-code">
+                <div class="code-window-head">
+                    <div class="window-dots">
+                        <i></i><i></i><i></i>
+                    </div>
+                    <span>hello.py</span>
+                </div>
+
+                <pre><span class="code-purple">name</span> = <span class="code-yellow">"Programming School"</span>
+
+<span class="code-purple">print</span>(<span class="code-green">"Hello, World!"</span>)
+<span class="code-purple">print</span>(<span class="code-yellow">"歡迎來到程式學院"</span>)
+
+<span class="code-comment"># 開始你的程式學習之旅</span></pre>
+
+                <div class="code-result">
+                    <span>執行結果</span>
+                    <strong>Hello, World!</strong>
+                    <strong>歡迎來到程式學院</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- 課程 -->
+        <section class="section" id="courses">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">COURSES</span>
+                    <h2>選擇你的學習課程</h2>
+                    <p>從基礎開始，逐步建立程式設計能力。</p>
+                </div>
+            </div>
+
+            <div class="course-tools">
+                <input
+                    type="search"
+                    id="course-search"
+                    placeholder="搜尋課程名稱..."
+                    aria-label="搜尋課程"
+                >
+
+                <div class="filter-list" id="course-filters">
+                    <button class="filter-chip active" data-filter="all">全部</button>
+                    <button class="filter-chip" data-filter="python">Python</button>
+                    <button class="filter-chip" data-filter="cpp">C++</button>
+                    <button class="filter-chip" data-filter="html">HTML</button>
+                    <button class="filter-chip" data-filter="css">CSS</button>
+                    <button class="filter-chip" data-filter="js">JavaScript</button>
+                </div>
+            </div>
+
+            <div class="course-grid" id="course-grid"></div>
+        </section>
+
+        <!-- 學習教室 -->
+        <section class="section section-soft" id="lesson">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">CLASSROOM</span>
+                    <h2>學習教室</h2>
+                    <p>閱讀課程內容，完成後記錄學習進度。</p>
+                </div>
+            </div>
+
+            <div class="lesson-layout">
+                <article class="panel lesson-panel">
+                    <div class="lesson-meta">
+                        <span id="lesson-language">PYTHON</span>
+                        <span id="lesson-number">第 1 / 3 堂</span>
+                    </div>
+
+                    <h3 id="lesson-title">認識 Python</h3>
+                    <p id="lesson-description">學習第一個 Python 程式。</p>
+
+                    <div class="lesson-content" id="lesson-content"></div>
+
+                    <div class="lesson-actions">
+                        <button id="lesson-prev" class="btn btn-outline">
+                            上一堂
+                        </button>
+
+                        <button id="lesson-complete" class="btn btn-primary">
+                            完成本堂課
+                        </button>
+
+                        <button id="lesson-next" class="btn btn-outline">
+                            下一堂
+                        </button>
+                    </div>
+
+                    <p class="small-note" id="lesson-progress-note">
+                        完成後可以記錄學習進度。
+                    </p>
+                </article>
+
+                <aside class="panel progress-panel">
+                    <span class="eyebrow">YOUR PROGRESS</span>
+                    <h3>學習進度</h3>
+
+                    <div class="progress-number">
+                        <strong id="completed-count">0</strong>
+                        <span>堂已完成</span>
+                    </div>
+
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-bar"></div>
+                    </div>
+
+                    <div class="progress-caption">
+                        <span id="progress-caption">尚未開始</span>
+                        <strong id="progress-percent">0%</strong>
+                    </div>
+
+                    <p class="small-note">
+                        完成課程後，系統會記錄在這台裝置。
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <!-- 程式練習 -->
+        <section class="section" id="playground">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">CODE PLAYGROUND</span>
+                    <h2>線上程式練習</h2>
+                    <p>選擇程式語言，輸入程式碼並執行。</p>
+                </div>
+            </div>
+
+            <div class="panel playground">
+                <div class="editor-toolbar">
+                    <div class="editor-tabs">
+                        <button class="language-tab active" data-language="python">Python</button>
+                        <button class="language-tab" data-language="cpp">C++</button>
+                        <button class="language-tab" data-language="html">HTML</button>
+                        <button class="language-tab" data-language="css">CSS</button>
+                        <button class="language-tab" data-language="js">JavaScript</button>
+                    </div>
+
+                    <span class="editor-label" id="editor-language">Python</span>
+                </div>
+
+                <div class="editor-layout">
+                    <div class="editor-column">
+                        <div class="editor-label">
+                            <span>程式碼編輯器</span>
+                            <span>Code Editor</span>
+                        </div>
+
+                        <textarea
+                            id="code-editor"
+                            spellcheck="false"
+                            aria-label="程式碼編輯器"
+                        ></textarea>
+
+                        <div class="editor-actions">
+                            <button id="run-code" class="btn btn-primary">
+                                ▶ 執行程式
+                            </button>
+
+                            <button id="reset-code" class="btn btn-outline">
+                                重設程式碼
+                            </button>
+                        </div>
+
+                        <p id="run-message">準備就緒</p>
+                    </div>
+
+                    <div class="output-column">
+                        <div class="output-label">
+                            <span>執行結果</span>
+                            <span>Output</span>
+                        </div>
+
+                        <pre id="code-output">執行結果會顯示在這裡。</pre>
+
+                        <div id="web-preview-wrap" class="preview-wrap hidden">
+                            <div class="output-label">
+                                <span>網頁預覽</span>
+                            </div>
+
+                            <iframe
+                                id="preview-frame"
+                                title="網頁程式預覽"
+                                sandbox="allow-scripts"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <p class="small-note">
-                Python 在瀏覽器執行；C++ 使用第三方編譯服務。
-                請勿在練習區輸入密碼或個人機密資料。
+                Python 使用 Pyodide 在瀏覽器執行；C++ 使用外部編譯服務。
+                請勿在練習環境輸入密碼或私人資料。
+            </p>
+        </section>
+
+        <!-- 測驗 -->
+        <section class="section section-soft" id="quiz">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">QUIZ</span>
+                    <h2>程式知識測驗</h2>
+                    <p>測試你對程式語言的理解。</p>
+                </div>
+            </div>
+
+            <div class="panel quiz-panel">
+                <div class="quiz-top">
+                    <span id="quiz-category">程式基礎</span>
+                    <span id="quiz-counter">第 1 / 5 題</span>
+                </div>
+
+                <h3 id="quiz-question">題目載入中...</h3>
+
+                <div class="quiz-options" id="quiz-options"></div>
+
+                <p id="quiz-feedback"></p>
+
+                <div class="quiz-bottom">
+                    <span id="quiz-score">目前答對：0 題</span>
+                    <button id="quiz-next" class="btn btn-primary" disabled>
+                        下一題
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <a class="brand" href="#home">
+            <span class="brand-icon">⌘</span>
+            <span>程式學院</span>
+        </a>
+
+        <p>© <span id="year"></span> 程式學院｜開始你的程式學習之旅。</p>
+    </footer>
+
+    <!-- 登入註冊視窗 -->
+    <div class="modal hidden" id="auth-modal" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+
+        <div class="modal-card">
+            <button class="modal-close" id="auth-close" aria-label="關閉">×</button>
+
+            <span class="eyebrow">YOUR ACCOUNT</span>
+            <h2 id="auth-title">歡迎回到程式學院</h2>
+
+            <div class="auth-tabs">
+                <button class="auth-mode active" data-mode="login">
+                    登入
+                </button>
+                <button class="auth-mode" data-mode="register">
+                    註冊
+                </button>
+            </div>
+
+            <form id="auth-form">
+                <label for="auth-email">電子郵件</label>
+                <input
+                    id="auth-email"
+                    type="email"
+                    placeholder="請輸入電子郵件"
+                    required
+                >
+
+                <label for="auth-password">密碼</label>
+                <input
+                    id="auth-password"
+                    type="password"
+                    placeholder="至少 6 個字元"
+                    minlength="6"
+                    required
+                >
+
+                <button type="submit" class="btn btn-primary full-width" id="auth-submit">
+                    登入
+                </button>
+            </form>
+
+            <p id="auth-message" class="small-note">
+                目前為示範登入介面。
             </p>
         </div>
-    </section>
-
-    <!-- 測驗 -->
-    <section id="quiz" class="section section-soft">
-        <div class="section-heading">
-            <div>
-                <span class="eyebrow">QUIZ</span>
-                <h2>程式知識小測驗</h2>
-                <p>完成題目，檢查自己的學習成果。</p>
-            </div>
-        </div>
-
-        <div class="quiz-panel panel">
-            <div class="quiz-top">
-                <span id="quiz-category">程式基礎</span>
-                <span id="quiz-counter">第 1 / 5 題</span>
-            </div>
-            <h3 id="quiz-question">載入測驗中...</h3>
-            <div id="quiz-options" class="quiz-options"></div>
-            <p id="quiz-feedback" role="status"></p>
-            <div class="quiz-bottom">
-                <span id="quiz-score">目前答對：0 題</span>
-                <button id="quiz-next" class="btn btn-primary" disabled>下一題</button>
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer class="footer">
-    <a class="brand" href="#">⌘ 程式學院</a>
-    <p>Learn · Code · Create</p>
-    <p>© <span id="year"></span> 程式學院</p>
-</footer>
-
-<!-- 登入註冊視窗 -->
-<div id="auth-modal" class="modal hidden" aria-hidden="true">
-    <div class="modal-backdrop"></div>
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-        <button id="auth-close" class="modal-close" aria-label="關閉">×</button>
-        <span class="eyebrow">WELCOME</span>
-        <h2 id="auth-title">歡迎回到程式學院</h2>
-
-        <div class="auth-tabs">
-            <button class="auth-mode active" data-mode="login">登入</button>
-            <button class="auth-mode" data-mode="register">註冊</button>
-        </div>
-
-        <form id="auth-form">
-            <label for="auth-email">電子郵件</label>
-            <input id="auth-email" type="email" required placeholder="name@example.com">
-
-            <label for="auth-password">密碼</label>
-            <input id="auth-password" type="password" required minlength="6"
-                placeholder="至少 6 個字元">
-
-            <button id="auth-submit" class="btn btn-primary full-width" type="submit">登入</button>
-        </form>
-        <p id="auth-message" class="small-note" role="status">
-            示範模式：帳號資料只保存在目前瀏覽器。
-        </p>
     </div>
-</div>
 
-<div id="toast" class="toast" role="status"></div>
+    <!-- 提示訊息 -->
+    <div class="toast" id="toast" role="status"></div>
 
-<script src="app.js"></script>
 </body>
 </html>
-
