@@ -1,884 +1,465 @@
+"use strict";
 
-/* =========================================
-   程式學院 Programming Learning School
-   ========================================= */
+/* =====================================
+   1. 全域設定
+===================================== */
 
+const $ = (selector) => document.querySelector(selector);
 
-/* =========================================
-   1. Supabase 設定
-   ========================================= */
+let currentLanguage = "python";
+let currentFilter = "all";
+let currentCourse = null;
+let currentLessonIndex = 0;
+let pyodideInstance = null;
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let authMode = "login";
 
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+const STORAGE_KEYS = {
+    progress: "programming_school_progress_v1",
+    user: "programming_school_demo_user"
+};
 
-let supabaseClient = null;
+const languageNames = {
+    python: "Python",
+    cpp: "C++",
+    html: "HTML",
+    css: "CSS",
+    js: "JavaScript"
+};
 
-if (
-    SUPABASE_URL &&
-    SUPABASE_ANON_KEY &&
-    window.supabase
-) {
-    supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
-}
+const languageIcons = {
+    python: "Py",
+    cpp: "C++",
+    html: "5",
+    css: "3",
+    js: "JS"
+};
 
-
-/* =========================================
-   2. Python / C++ 執行服務
-   ========================================= */
-
-// 需要自行部署或取得授權的 Piston API。
-// 不要把私人 API Token 放在前端。
-
-const PISTON_API_URL = "";
-
-
-/* =========================================
-   3. 課程資料
-   ========================================= */
+/* =====================================
+   2. 課程資料
+===================================== */
 
 const courses = [
     {
         id: "python",
-        name: "Python",
-        icon: "🐍",
-        category: "入門",
-        description: "從變數、條件判斷到迴圈，學習 Python 程式設計。",
+        name: "Python 程式設計",
+        description: "從變數、條件判斷到迴圈與函式。",
+        level: "初級",
         lessons: [
             {
                 title: "認識 Python",
-                description: "認識 Python 與第一個程式。",
+                description: "學習第一個 Python 程式。",
                 content: `
-                    <h3>什麼是 Python？</h3>
-                    <p>Python 是一種容易閱讀的程式語言。</p>
-                    <p>常用於人工智慧、資料分析及自動化。</p>
-                    <h3>第一個程式</h3>
-                    <p>使用 print() 輸出文字。</p>
+                    <h4>什麼是 Python？</h4>
+                    <p>Python 是一種容易閱讀、用途廣泛的程式語言，可以用來製作網站、遊戲、資料分析及人工智慧。</p>
+                    <h4>第一個程式</h4>
+                    <pre>print("Hello, World!")</pre>
+                    <p><code>print()</code> 是輸出指令，可以把文字或數字顯示在畫面上。</p>
+                    <h4>練習</h4>
+                    <p>試著把編輯器中的文字改成自己的名字，再執行程式。</p>
                 `,
-                code: `print("Hello World!")`
+                code: `print("Hello, World!")\nprint("歡迎來到程式學院")`
             },
             {
-                title: "變數",
-                description: "學習如何建立變數。",
+                title: "變數與資料型態",
+                description: "學習如何儲存資料。",
                 content: `
-                    <h3>什麼是變數？</h3>
-                    <p>變數可以儲存資料，例如姓名、年齡和分數。</p>
+                    <h4>什麼是變數？</h4>
+                    <p>變數可以想像成一個用來存放資料的盒子。</p>
+                    <pre>name = "小明"\nage = 18\nscore = 95.5\nprint(name)\nprint(age)\nprint(score)</pre>
+                    <p>字串使用引號，整數不需要引號，小數可以使用浮點數。</p>
                 `,
-                code: `name = "Tom"
-age = 18
-
-print(name)
-print(age)`
+                code: `name = "小明"\nage = 18\nscore = 95.5\n\nprint(name)\nprint(age)\nprint(score)`
             },
             {
                 title: "條件判斷",
-                description: "學習 if、elif、else。",
+                description: "使用 if、else 做出判斷。",
                 content: `
-                    <h3>if 條件判斷</h3>
-                    <p>if 可以判斷條件是否成立。</p>
-                    <p>else 則處理其他情況。</p>
+                    <h4>if 與 else</h4>
+                    <p>程式可以根據條件，決定要執行哪一段程式碼。</p>
+                    <pre>score = 80\n\nif score >= 60:\n    print("及格")\nelse:\n    print("不及格")</pre>
+                    <p>注意：Python 使用縮排表示程式區塊。</p>
                 `,
-                code: `score = 85
-
-if score >= 60:
-    print("及格")
-else:
-    print("不及格")`
-            },
-            {
-                title: "For 迴圈",
-                description: "學習重複執行程式。",
-                content: `
-                    <h3>for 迴圈</h3>
-                    <p>for 可以重複執行程式。</p>
-                    <p>range(1, 6) 會產生 1 到 5。</p>
-                `,
-                code: `for i in range(1, 6):
-    print(i)`
+                code: `score = 80\n\nif score >= 60:\n    print("及格")\nelse:\n    print("不及格")`
             }
         ]
     },
-
     {
         id: "cpp",
-        name: "C++",
-        icon: "⚙️",
-        category: "進階基礎",
-        description: "學習 C++ 基礎語法、變數、迴圈與陣列。",
+        name: "C++ 程式設計",
+        description: "學習輸入輸出、變數、判斷和迴圈。",
+        level: "初級",
         lessons: [
             {
                 title: "認識 C++",
-                description: "了解 C++ 程式的基本結構。",
+                description: "建立第一個 C++ 程式。",
                 content: `
-                    <h3>什麼是 C++？</h3>
-                    <p>C++ 常用於程式競賽、遊戲與系統開發。</p>
-                    <p>cout 可以輸出文字。</p>
+                    <h4>第一個 C++ 程式</h4>
+                    <pre>#include &lt;iostream&gt;\nusing namespace std;\n\nint main() {\n    cout &lt;&lt; "Hello World";\n    return 0;\n}</pre>
+                    <p><code>cout</code> 可以輸出資料，<code>main()</code> 是程式的主要入口。</p>
                 `,
-                code: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello World!" << endl;
-    return 0;
-}`
+                code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello World!" << endl;\n    return 0;\n}`
             },
             {
-                title: "變數",
-                description: "認識 int、double 和 string。",
+                title: "變數與輸入輸出",
+                description: "使用 cin 和 cout。",
                 content: `
-                    <h3>變數</h3>
-                    <p>int 儲存整數。</p>
-                    <p>double 儲存小數。</p>
-                    <p>string 儲存文字。</p>
+                    <h4>變數</h4>
+                    <p>C++ 使用 int 儲存整數，double 儲存小數，string 儲存文字。</p>
+                    <pre>int age;\ncin >> age;\ncout << age;</pre>
+                    <p><code>cin</code> 可以讀取使用者輸入。</p>
                 `,
-                code: `#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    int age = 18;
-    double height = 170.5;
-    string name = "Tom";
-
-    cout << age << endl;
-    cout << height << endl;
-    cout << name << endl;
-
-    return 0;
-}`
+                code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int age;\n    cout << "請輸入年齡：";\n    cin >> age;\n    cout << "你的年齡是 " << age << endl;\n    return 0;\n}`
             },
             {
-                title: "If 條件判斷",
-                description: "使用 if 和 else。",
+                title: "if 條件判斷",
+                description: "根據條件執行不同程式。",
                 content: `
-                    <h3>條件判斷</h3>
-                    <p>if 用來判斷條件是否成立。</p>
-                    <p>else 用來處理條件不成立的情況。</p>
+                    <h4>if 與 else</h4>
+                    <pre>int score = 80;\n\nif (score >= 60) {\n    cout << "及格";\n} else {\n    cout << "不及格";\n}</pre>
+                    <p>大括號代表程式區塊。</p>
                 `,
-                code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int score = 85;
-
-    if (score >= 60) {
-        cout << "及格";
-    } else {
-        cout << "不及格";
-    }
-
-    return 0;
-}`
-            },
-            {
-                title: "For 迴圈",
-                description: "使用 for 重複執行程式。",
-                content: `
-                    <h3>for 迴圈</h3>
-                    <p>for 包含初始值、條件及更新方式。</p>
-                `,
-                code: `#include <iostream>
-using namespace std;
-
-int main() {
-    for (int i = 1; i <= 5; i++) {
-        cout << i << endl;
-    }
-
-    return 0;
-}`
+                code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int score = 80;\n\n    if (score >= 60) {\n        cout << "及格" << endl;\n    } else {\n        cout << "不及格" << endl;\n    }\n    return 0;\n}`
             }
         ]
     },
-
     {
         id: "html",
-        name: "HTML",
-        icon: "🌐",
-        category: "網頁",
-        description: "學習網頁結構、標題、段落與表單。",
+        name: "HTML 網頁結構",
+        description: "學習標題、段落、圖片和連結。",
+        level: "初級",
         lessons: [
             {
-                title: "HTML 基本結構",
-                description: "認識 HTML 網頁架構。",
+                title: "認識 HTML",
+                description: "建立第一個網頁。",
                 content: `
-                    <h3>什麼是 HTML？</h3>
-                    <p>HTML 用來建立網頁的結構。</p>
-                    <p>常見標籤有 html、head、body、h1 和 p。</p>
+                    <h4>HTML 是什麼？</h4>
+                    <p>HTML 負責定義網頁的結構，例如標題、文字、圖片和按鈕。</p>
+                    <pre>&lt;h1&gt;我的網頁&lt;/h1&gt;\n&lt;p&gt;你好！&lt;/p&gt;</pre>
+                    <p>在編輯器按下執行，就能看到網頁預覽。</p>
                 `,
-                code: `<!DOCTYPE html>
-<html>
-<head>
-    <title>我的網頁</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-    <p>歡迎來到程式學院。</p>
-</body>
-</html>`
+                code: `<h1>我的第一個網頁</h1>\n<p>歡迎來到程式學院！</p>\n<button>點擊我</button>`
             },
             {
                 title: "標題與段落",
-                description: "使用 h1 和 p 建立內容。",
+                description: "使用 h1、h2、p。",
                 content: `
-                    <h3>標題與段落</h3>
-                    <p>HTML 使用 h1 到 h6 建立標題。</p>
-                    <p>使用 p 建立文字段落。</p>
+                    <h4>標題</h4>
+                    <p>HTML 提供 h1 到 h6 六種標題層級。</p>
+                    <pre>&lt;h1&gt;大標題&lt;/h1&gt;\n&lt;h2&gt;小標題&lt;/h2&gt;\n&lt;p&gt;這是一段文字。&lt;/p&gt;</pre>
                 `,
-                code: `<h1>我的標題</h1>
-<h2>第二個標題</h2>
-<p>這是一段文字。</p>`
+                code: `<h1>我的學習筆記</h1>\n<h2>今天的課程</h2>\n<p>今天我學會了 HTML。</p>`
             },
             {
                 title: "連結與圖片",
-                description: "建立超連結與顯示圖片。",
+                description: "加入超連結和圖片。",
                 content: `
-                    <h3>超連結</h3>
-                    <p>使用 a 標籤建立連結。</p>
-                    <h3>圖片</h3>
-                    <p>使用 img 標籤顯示圖片。</p>
+                    <h4>超連結</h4>
+                    <pre>&lt;a href="https://example.com"&gt;開啟網站&lt;/a&gt;</pre>
+                    <h4>圖片</h4>
+                    <pre>&lt;img src="圖片網址" alt="圖片說明"&gt;</pre>
                 `,
-                code: `<a href="https://www.google.com">
-    前往 Google
-</a>
-
-<br>
-
-<img src="https://placehold.co/200x100"
-     alt="示範圖片">`
+                code: `<h1>我的網站</h1>\n<a href="https://example.com">前往網站</a>\n<p>這是一個範例頁面。</p>`
             }
         ]
     },
-
     {
         id: "css",
-        name: "CSS",
-        icon: "🎨",
-        category: "網頁",
-        description: "學習網頁顏色、字體、排版與動畫。",
+        name: "CSS 網頁設計",
+        description: "學習顏色、字體、排版和動畫。",
+        level: "初級",
         lessons: [
             {
                 title: "認識 CSS",
-                description: "使用 CSS 設計網頁。",
+                description: "讓網頁變得更漂亮。",
                 content: `
-                    <h3>什麼是 CSS？</h3>
-                    <p>CSS 負責網頁外觀與排版。</p>
+                    <h4>CSS 是什麼？</h4>
+                    <p>CSS 用來設定網頁的顏色、字體、大小和版面配置。</p>
+                    <pre>h1 {\n    color: blue;\n    font-size: 30px;\n}</pre>
+                    <p>HTML 負責結構，CSS 負責外觀。</p>
                 `,
-                code: `body {
-    background-color: lightblue;
-    font-family: Arial;
-}
-
-h1 {
-    color: blue;
-}`
+                code: `h1 {\n    color: purple;\n    text-align: center;\n}\n\np {\n    color: #555;\n    font-size: 18px;\n}`
             },
             {
-                title: "文字樣式",
-                description: "調整文字顏色和大小。",
+                title: "顏色與字體",
+                description: "設定文字顏色和字體。",
                 content: `
-                    <h3>文字樣式</h3>
-                    <p>color 設定文字顏色。</p>
-                    <p>font-size 設定文字大小。</p>
+                    <h4>設定顏色</h4>
+                    <pre>p {\n    color: red;\n    background-color: yellow;\n}</pre>
+                    <p>可以使用顏色名稱，也可以使用十六進位色碼。</p>
                 `,
-                code: `h1 {
-    color: purple;
-    font-size: 36px;
-    font-weight: bold;
-}
-
-p {
-    color: #555;
-    font-size: 18px;
-}`
+                code: `body {\n    font-family: Arial;\n}\n\nh1 {\n    color: #6558e8;\n}\n\np {\n    color: #555;\n}`
             },
             {
-                title: "背景與邊框",
-                description: "學習背景顏色與邊框。",
+                title: "盒模型",
+                description: "認識 margin、padding 和 border。",
                 content: `
-                    <h3>背景與邊框</h3>
-                    <p>background-color 設定背景顏色。</p>
-                    <p>border-radius 設定圓角。</p>
+                    <h4>CSS 盒模型</h4>
+                    <p>每個 HTML 元素都可以看成一個盒子。</p>
+                    <ul>
+                        <li>margin：外距</li>
+                        <li>padding：內距</li>
+                        <li>border：邊框</li>
+                    </ul>
                 `,
-                code: `.card {
-    background-color: lightblue;
-    border: 2px solid blue;
-    border-radius: 12px;
-    padding: 20px;
-}`
+                code: `.card {\n    width: 200px;\n    padding: 20px;\n    margin: 20px;\n    border: 2px solid purple;\n    border-radius: 12px;\n}`
             }
         ]
     },
-
     {
-        id: "javascript",
-        name: "JavaScript",
-        icon: "✨",
-        category: "網頁",
-        description: "學習 JavaScript，讓網頁具有互動功能。",
+        id: "js",
+        name: "JavaScript 程式設計",
+        description: "學習變數、函式、事件與互動。",
+        level: "初級",
         lessons: [
             {
                 title: "認識 JavaScript",
-                description: "讓網頁可以執行程式。",
+                description: "讓網頁具有互動功能。",
                 content: `
-                    <h3>什麼是 JavaScript？</h3>
-                    <p>JavaScript 可以讓網頁產生互動效果。</p>
-                    <p>console.log() 可以輸出訊息。</p>
+                    <h4>JavaScript 是什麼？</h4>
+                    <p>JavaScript 可以讓網頁回應使用者操作，例如點擊按鈕、計算數字和更新內容。</p>
+                    <pre>console.log("Hello JavaScript");</pre>
                 `,
-                code: `console.log("Hello World!");`
+                code: `console.log("Hello JavaScript!");\nalert("歡迎來到程式學院！");`
             },
             {
                 title: "變數",
-                description: "使用 let 和 const 儲存資料。",
+                description: "使用 let、const 儲存資料。",
                 content: `
-                    <h3>變數</h3>
-                    <p>let 可以重新賦值。</p>
-                    <p>const 不能重新賦值。</p>
+                    <h4>變數</h4>
+                    <pre>let name = "小明";\nconst age = 18;\nconsole.log(name, age);</pre>
+                    <p>let 可以重新指定值，const 宣告後不能重新指定。</p>
                 `,
-                code: `let name = "Tom";
-const age = 18;
-
-console.log(name);
-console.log(age);`
+                code: `let name = "小明";\nconst age = 18;\n\nconsole.log(name);\nconsole.log(age);`
             },
             {
-                title: "函式",
-                description: "建立可重複使用的程式區塊。",
+                title: "函式與事件",
+                description: "製作可以重複使用的功能。",
                 content: `
-                    <h3>函式</h3>
-                    <p>function 可以建立函式。</p>
-                    <p>呼叫函式就能執行裡面的程式。</p>
+                    <h4>函式</h4>
+                    <pre>function sayHello() {\n    console.log("你好！");\n}\nsayHello();</pre>
+                    <p>函式可以把一段程式包裝起來，需要時再呼叫。</p>
                 `,
-                code: `function hello() {
-    console.log("Hello!");
-}
-
-hello();`
+                code: `function sayHello() {\n    console.log("你好！");\n}\n\nsayHello();`
             }
         ]
     }
 ];
 
+/* =====================================
+   3. 程式碼範例
+===================================== */
 
-/* =========================================
-   4. 五題測驗
-   ========================================= */
+const starterCode = {
+    python: `print("Hello Python!")\nprint(10 + 20)`,
+    cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello C++!" << endl;\n    cout << 10 + 20 << endl;\n    return 0;\n}`,
+    html: `<h1>我的網頁</h1>\n<p>歡迎來到程式學院！</p>\n<button onclick="alert('你好！')">點擊我</button>`,
+    css: `body {\n    font-family: Arial;\n    text-align: center;\n}\n\nh1 {\n    color: purple;\n}`,
+    js: `console.log("Hello JavaScript!");\nconsole.log(10 + 20);`
+};
+
+/* =====================================
+   4. 測驗題目
+===================================== */
 
 const quizQuestions = [
     {
-        category: "Python 基礎",
-        question: "Python 使用哪個指令輸出文字？",
-        options: ["cout", "print()", "echo", "printf"],
+        question: "Python 使用哪一個指令輸出文字？",
+        options: ["echo()", "print()", "cout", "write()"],
         answer: 1,
         explanation: "Python 使用 print() 輸出文字。"
     },
     {
-        category: "C++ 基礎",
-        question: "C++ 程式通常從哪個函式開始執行？",
-        options: ["start()", "main()", "run()", "begin()"],
-        answer: 1,
-        explanation: "C++ 程式通常從 main() 函式開始執行。"
-    },
-    {
-        category: "HTML 基礎",
-        question: "HTML 使用哪個標籤建立最大層級的標題？",
-        options: ["<p>", "<h1>", "<title>", "<div>"],
-        answer: 1,
-        explanation: "h1 是 HTML 中層級最大的標題標籤。"
-    },
-    {
-        category: "CSS 基礎",
-        question: "CSS 使用哪個屬性設定文字顏色？",
-        options: ["background", "font", "color", "text"],
+        question: "C++ 的主要程式進入點是哪一個？",
+        options: ["start()", "run()", "main()", "begin()"],
         answer: 2,
-        explanation: "color 可以設定文字顏色。"
+        explanation: "C++ 程式從 main() 函式開始執行。"
     },
     {
-        category: "JavaScript 基礎",
-        question: "JavaScript 使用哪個關鍵字宣告常數？",
-        options: ["var", "let", "const", "int"],
-        answer: 2,
-        explanation: "const 用來宣告不能重新賦值的變數。"
+        question: "HTML 主要負責什麼？",
+        options: ["網頁結構", "資料庫", "作業系統", "網路連線"],
+        answer: 0,
+        explanation: "HTML 用來建立網頁結構。"
+    },
+    {
+        question: "CSS 的主要用途是什麼？",
+        options: ["執行 Python", "設計網頁外觀", "儲存資料", "編譯 C++"],
+        answer: 1,
+        explanation: "CSS 負責網頁的顏色、字體和排版。"
+    },
+    {
+        question: "JavaScript 可以讓網頁具有什麼功能？",
+        options: ["互動功能", "只顯示圖片", "只能播放音樂", "只能儲存檔案"],
+        answer: 0,
+        explanation: "JavaScript 能讓網頁回應使用者操作。"
     }
 ];
 
+/* =====================================
+   5. 工具函式與本機資料
+===================================== */
 
-/* =========================================
-   5. 編輯器預設程式碼
-   ========================================= */
-
-const starterCode = {
-    html: `<!DOCTYPE html>
-<html>
-<head>
-    <title>我的網頁</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-    <p>歡迎來到程式學院。</p>
-    <button onclick="alert('你好！')">點我</button>
-</body>
-</html>`,
-
-    css: `body {
-    background-color: #eef4ff;
-    font-family: Arial;
-    text-align: center;
-    padding: 30px;
-}
-
-h1 {
-    color: #2563eb;
-}
-
-button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-}`,
-
-    js: `console.log("Hello World!");
-
-let name = "Tom";
-
-console.log("你好，" + name);
-
-function sayHello() {
-    alert("歡迎來到程式學院！");
-}
-
-sayHello();`,
-
-    python: `print("Hello World!")
-
-name = "Tom"
-print("你好，" + name)
-
-for i in range(1, 6):
-    print(i)`,
-
-    cpp: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello World!" << endl;
-
-    for (int i = 1; i <= 5; i++) {
-        cout << i << endl;
+function getProgress() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEYS.progress)) || {};
+    } catch {
+        return {};
     }
+}
 
-    return 0;
-}`
-};
+function saveProgress(progress) {
+    localStorage.setItem(STORAGE_KEYS.progress, JSON.stringify(progress));
+}
 
-
-/* =========================================
-   6. 全域變數
-   ========================================= */
-
-let activeCourse = null;
-let activeLessonIndex = 0;
-
-let activeFilter = "全部";
-let searchKeyword = "";
-
-let activeLanguage = "html";
-
-let codeValues = { ...starterCode };
-
-let completedIds = [];
-
-let currentUser = null;
-
-let authMode = "login";
-
-let quizIndex = 0;
-let quizScore = 0;
-let quizAnswered = false;
-
-let toastTimer = null;
-
-
-/* =========================================
-   7. 常用函式
-   ========================================= */
+function getCompletedCount() {
+    const progress = getProgress();
+    return Object.values(progress).filter(Boolean).length;
+}
 
 function showToast(message) {
-    const toast = document.getElementById("toast");
-
-    if (!toast) return;
-
+    const toast = $("#toast");
     toast.textContent = message;
     toast.classList.add("show");
 
-    clearTimeout(toastTimer);
-
-    toastTimer = setTimeout(() => {
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => {
         toast.classList.remove("show");
     }, 2500);
 }
 
-
-function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, char => {
-        const map = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;"
-        };
-
-        return map[char];
-    });
-}
-
-
-function getCourse(courseId) {
-    return courses.find(course => course.id === courseId);
-}
-
-
-function getLessonId(courseId, index) {
-    return `${courseId}-${index}`;
-}
-
-
-/* =========================================
-   8. 課程搜尋與篩選
-   ========================================= */
+/* =====================================
+   6. 課程卡片
+===================================== */
 
 function renderCourses() {
-    const container = document.getElementById("course-grid");
+    const grid = $("#course-grid");
+    const keyword = $("#course-search").value.trim().toLowerCase();
 
-    if (!container) return;
+    const filtered = courses.filter(course => {
+        const matchesLanguage =
+            currentFilter === "all" || course.id === currentFilter;
 
-    const filteredCourses = courses.filter(course => {
-        const matchesFilter =
-            activeFilter === "全部" ||
-            course.category === activeFilter;
-
-        const keyword = searchKeyword.toLowerCase();
-
-        const matchesSearch =
+        const matchesKeyword =
             course.name.toLowerCase().includes(keyword) ||
             course.description.toLowerCase().includes(keyword);
 
-        return matchesFilter && matchesSearch;
+        return matchesLanguage && matchesKeyword;
     });
 
-    if (filteredCourses.length === 0) {
-        container.innerHTML = `
-            <div class="empty-courses">
-                找不到符合條件的課程。
-            </div>
-        `;
+    grid.innerHTML = "";
+
+    if (filtered.length === 0) {
+        grid.innerHTML = "<p>找不到符合條件的課程。</p>";
         return;
     }
 
-    container.innerHTML = filteredCourses.map(course => {
+    filtered.forEach(course => {
         const completed = course.lessons.filter((lesson, index) => {
-            return completedIds.includes(
-                getLessonId(course.id, index)
-            );
+            return Boolean(getProgress()[`${course.id}-${index}`]);
         }).length;
 
-        const percent = Math.round(
-            completed / course.lessons.length * 100
-        );
+        const card = document.createElement("article");
+        card.className = "course-card";
 
-        return `
-            <article class="course-card">
+        const icon = document.createElement("div");
+        icon.className = "course-icon";
+        icon.textContent = languageIcons[course.id];
 
-                <div class="course-card-top">
-                    <span class="course-icon">${course.icon}</span>
-                    <span class="course-level">${escapeHtml(course.category)}</span>
-                </div>
+        const title = document.createElement("h3");
+        title.textContent = course.name;
 
-                <h3>${escapeHtml(course.name)}</h3>
+        const description = document.createElement("p");
+        description.textContent = course.description;
 
-                <p>${escapeHtml(course.description)}</p>
+        const info = document.createElement("div");
+        info.className = "course-info";
+        info.textContent =
+            `${course.level} · ${course.lessons.length} 堂課 · 已完成 ${completed} 堂`;
 
-                <div class="course-progress">
-                    <span>學習進度</span>
-                    <span>${completed}/${course.lessons.length}</span>
-                </div>
+        const button = document.createElement("button");
+        button.className = "btn btn-primary";
+        button.textContent = "開始學習";
+        button.addEventListener("click", () => {
+            openCourse(course.id);
+        });
 
-                <div class="course-progress-track">
-                    <span style="width:${percent}%"></span>
-                </div>
-
-                <button
-                    class="button button-primary course-start"
-                    data-course="${course.id}"
-                >
-                    開始學習 →
-                </button>
-
-            </article>
-        `;
-    }).join("");
-}
-
-
-function setCourseFilter(filter) {
-    activeFilter = filter;
-
-    document.querySelectorAll(".filter-chip").forEach(button => {
-        button.classList.toggle(
-            "active",
-            button.dataset.filter === filter
-        );
+        card.append(icon, title, description, info, button);
+        grid.appendChild(card);
     });
-
-    renderCourses();
 }
 
-
-/* =========================================
-   9. 課程內容
-   ========================================= */
-
-function selectCourse(courseId) {
-    const course = getCourse(courseId);
-
-    if (!course) return;
-
-    activeCourse = courseId;
-    activeLessonIndex = 0;
+function openCourse(courseId) {
+    currentCourse = courses.find(course => course.id === courseId);
+    currentLessonIndex = 0;
 
     renderLesson();
+
+    document.querySelector("#lesson").scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
+/* =====================================
+   7. 課堂內容
+===================================== */
 
 function renderLesson() {
-    if (!activeCourse) return;
+    if (!currentCourse) return;
 
-    const course = getCourse(activeCourse);
-    const lesson = course?.lessons[activeLessonIndex];
+    const lesson = currentCourse.lessons[currentLessonIndex];
+    const lessonId = `${currentCourse.id}-${currentLessonIndex}`;
 
-    if (!lesson) return;
+    $("#lesson-language").textContent =
+        languageNames[currentCourse.id].toUpperCase();
 
-    const title = document.getElementById("lesson-title");
-    const description = document.getElementById("lesson-description");
-    const content = document.getElementById("lesson-content");
-    const note = document.getElementById("lesson-progress-note");
-    const completeButton = document.getElementById("lesson-complete");
+    $("#lesson-number").textContent =
+        `第 ${currentLessonIndex + 1} / ${currentCourse.lessons.length} 堂`;
 
-    const lessonId = getLessonId(
-        activeCourse,
-        activeLessonIndex
-    );
+    $("#lesson-title").textContent = lesson.title;
+    $("#lesson-description").textContent = lesson.description;
+    $("#lesson-content").innerHTML = lesson.content;
 
-    const isCompleted = completedIds.includes(lessonId);
+    const completed = Boolean(getProgress()[lessonId]);
 
-    if (title) {
-        title.textContent =
-            `${course.icon} ${course.name}｜${lesson.title}`;
-    }
+    $("#lesson-complete").textContent =
+        completed ? "已完成 ✓" : "完成本堂課";
 
-    if (description) {
-        description.textContent = lesson.description;
-    }
+    $("#lesson-progress-note").textContent =
+        completed ? "這堂課已記錄完成。" : "完成後可以記錄學習進度。";
 
-    if (content) {
-        content.innerHTML = `
-            ${lesson.content}
+    $("#lesson-prev").disabled = currentLessonIndex === 0;
+    $("#lesson-next").disabled =
+        currentLessonIndex === currentCourse.lessons.length - 1;
 
-            <div class="lesson-example">
-                <h4>程式範例</h4>
-                <pre><code>${escapeHtml(lesson.code)}</code></pre>
-            </div>
-
-            <div class="lesson-navigation">
-                <span>第 ${activeLessonIndex + 1} 堂 / ${course.lessons.length} 堂</span>
-
-                <button
-                    class="small-button"
-                    id="previous-lesson"
-                    ${activeLessonIndex === 0 ? "disabled" : ""}
-                >
-                    上一堂
-                </button>
-
-                <button
-                    class="small-button"
-                    id="next-lesson"
-                    ${activeLessonIndex === course.lessons.length - 1 ? "disabled" : ""}
-                >
-                    下一堂
-                </button>
-            </div>
-        `;
-    }
-
-    if (note) {
-        note.textContent = isCompleted
-            ? "這堂課已完成"
-            : `目前學習：${course.name}`;
-    }
-
-    if (completeButton) {
-        completeButton.textContent = isCompleted
-            ? "取消完成 ↺"
-            : "標記為已完成 ✓";
-    }
-
-    // 將課程範例載入編輯器
-    const language =
-        course.id === "javascript" ? "js" : course.id;
-
-    if (starterCode[language] !== undefined) {
-        activeLanguage = language;
-        codeValues[language] = lesson.code;
-        renderEditor();
+    if (currentCourse.id === "python" ||
+        currentCourse.id === "cpp" ||
+        currentCourse.id === "html") {
+        selectLanguage(currentCourse.id, false, lesson.code);
+    } else {
+        selectLanguage(currentCourse.id, false, starterCode[currentCourse.id]);
     }
 
     updateProgress();
 }
 
-
-function toggleLessonComplete() {
-    if (!activeCourse) {
-        showToast("請先選擇一堂課程");
+function completeLesson() {
+    if (!currentCourse) {
+        showToast("請先選擇一堂課！");
         return;
     }
 
-    const id = getLessonId(
-        activeCourse,
-        activeLessonIndex
-    );
+    const progress = getProgress();
+    const lessonId = `${currentCourse.id}-${currentLessonIndex}`;
 
-    if (completedIds.includes(id)) {
-        completedIds = completedIds.filter(item => item !== id);
-        showToast("已取消完成紀錄");
-    } else {
-        completedIds.push(id);
-        showToast("恭喜完成這堂課！");
-    }
-
-    saveProgress();
+    progress[lessonId] = true;
+    saveProgress(progress);
 
     renderLesson();
     renderCourses();
-    updateProgress();
+    showToast("已完成本堂課！");
 }
-
-
-/* =========================================
-   10. 本機與雲端進度
-   ========================================= */
-
-function getProgressStorageKey() {
-    return currentUser
-        ? `programming-school-${currentUser.id}`
-        : "programming-school-guest";
-}
-
-
-function loadLocalProgress() {
-    try {
-        const saved = localStorage.getItem(
-            getProgressStorageKey()
-        );
-
-        const parsed = saved ? JSON.parse(saved) : [];
-
-        completedIds = Array.isArray(parsed)
-            ? parsed
-            : [];
-
-    } catch (error) {
-        console.error("讀取本機進度失敗：", error);
-        completedIds = [];
-    }
-}
-
-
-async function loadProgress() {
-    if (!currentUser || !supabaseClient) {
-        loadLocalProgress();
-        updateProgress();
-        renderCourses();
-        return;
-    }
-
-    try {
-        const { data, error } = await supabaseClient
-            .from("lesson_progress")
-            .select("course_id, completed")
-            .eq("user_id", currentUser.id);
-
-        if (error) throw error;
-
-        completedIds = (data || [])
-            .filter(item => item.completed)
-            .map(item => item.course_id);
-
-        localStorage.setItem(
-            getProgressStorageKey(),
-            JSON.stringify(completedIds)
-        );
-
-    } catch (error) {
-        console.error("雲端進度讀取失敗：", error);
-        loadLocalProgress();
-    }
-
-    updateProgress();
-    renderCourses();
-
-    if (activeCourse) {
-        renderLesson();
-    }
-}
-
-
-async function saveProgress() {
-    localStorage.setItem(
-        getProgressStorageKey(),
-        JSON.stringify(completedIds)
-    );
-
-    if (!currentUser || !supabaseClient) {
-        return;
-    }
-
-    const records = [];
-
-    courses.forEach(course => {
-        course.lessons.forEach((lesson, index) => {
-            const id = getLessonId(course.id, index);
-
-            records.push({
-                user_id: currentUser.id,
-                course_id: id,
-                completed: completedIds.includes(id),
-                updated_at: new Date().toISOString()
-            });
-        });
-    });
-
-    try {
-        const { error } = await supabaseClient
-            .from("lesson_progress")
-            .upsert(records, {
-                onConflict: "user_id,course_id"
-            });
-
-        if (error) throw error;
-
-    } catch (error) {
-        console.error(error);
-        showToast("雲端進度儲存失敗");
-    }
-}
-
 
 function updateProgress() {
     const total = courses.reduce(
@@ -886,1067 +467,615 @@ function updateProgress() {
         0
     );
 
-    const completed = completedIds.length;
+    const completed = getCompletedCount();
+    const percent = Math.round(completed / total * 100);
 
-    const percent = total
-        ? Math.round(completed / total * 100)
-        : 0;
-
-    const count = document.getElementById("completed-count");
-    const bar = document.getElementById("progress-bar");
-    const caption = document.getElementById("progress-caption");
-    const percentElement = document.getElementById("progress-percent");
-
-    if (count) count.textContent = completed;
-
-    if (bar) bar.style.width = percent + "%";
-
-    if (caption) {
-        caption.textContent =
-            percent === 100
-                ? "太棒了！你已完成所有課程！"
-                : completed === 0
-                    ? "開始第一堂課吧！"
-                    : "繼續努力，保持學習！";
-    }
-
-    if (percentElement) {
-        percentElement.textContent = percent + "%";
-    }
+    $("#completed-count").textContent = completed;
+    $("#progress-bar").style.width = `${percent}%`;
+    $("#progress-percent").textContent = `${percent}%`;
+    $("#progress-caption").textContent =
+        completed === 0 ? "尚未開始" : "持續進步中！";
 }
 
+/* =====================================
+   8. 編輯器切換
+===================================== */
 
-/* =========================================
-   11. 語言切換
-   ========================================= */
+function selectLanguage(language, updateButton = true, code = null) {
+    if (!starterCode[language]) return;
 
-function selectLanguage(language, button) {
-    if (language === "javascript") {
-        language = "js";
-    }
+    currentLanguage = language;
 
-    if (!Object.prototype.hasOwnProperty.call(starterCode, language)) {
-        showToast("不支援的程式語言");
-        return;
-    }
-
-    // 儲存目前正在編輯的內容
-    const editor = document.getElementById("code-editor");
-
-    if (editor) {
-        codeValues[activeLanguage] = editor.value;
-    }
-
-    activeLanguage = language;
-
-    renderEditor();
-
-    const message = document.getElementById("run-message");
-
-    if (message) {
-        if (language === "python" || language === "cpp") {
-            message.textContent =
-                `${language.toUpperCase()} 需要設定外部程式執行服務。`;
-        } else {
-            message.textContent =
-                "編輯程式碼後，按「執行程式」查看結果。";
-        }
-    }
-}
-
-
-function renderEditor() {
-    const editor = document.getElementById("code-editor");
-
-    if (!editor) return;
-
-    editor.value = codeValues[activeLanguage] || "";
-
-    document.querySelectorAll(".language-tab").forEach(tab => {
-        tab.classList.toggle(
+    document.querySelectorAll(".language-tab").forEach(button => {
+        button.classList.toggle(
             "active",
-            tab.dataset.language === activeLanguage
+            button.dataset.language === language
         );
     });
-}
 
+    $("#editor-language").textContent = languageNames[language];
 
-/* =========================================
-   12. HTML / CSS / JavaScript 預覽
-   ========================================= */
-
-function buildPreviewDocument() {
-    const html = codeValues.html || "";
-    const css = codeValues.css || "";
-    const js = codeValues.js || "";
-
-    const parser = new DOMParser();
-
-    const doc = parser.parseFromString(
-        html,
-        "text/html"
-    );
-
-    const style = doc.createElement("style");
-    style.textContent = css;
-
-    doc.head.appendChild(style);
-
-    // 把 console.log 輸出傳回主頁
-    const outputScript = doc.createElement("script");
-
-    outputScript.textContent = `
-        (function() {
-            function send(type, args) {
-                try {
-                    parent.postMessage({
-                        type: "playground-output",
-                        outputType: type,
-                        message: Array.from(args).map(function(item) {
-                            if (typeof item === "object" && item !== null) {
-                                try {
-                                    return JSON.stringify(item);
-                                } catch (error) {
-                                    return String(item);
-                                }
-                            }
-
-                            return String(item);
-                        }).join(" ")
-                    }, "*");
-                } catch (error) {}
-            }
-
-            const oldLog = console.log;
-            const oldError = console.error;
-
-            console.log = function() {
-                send("log", arguments);
-                oldLog.apply(console, arguments);
-            };
-
-            console.error = function() {
-                send("error", arguments);
-                oldError.apply(console, arguments);
-            };
-
-            window.onerror = function(message, source, line) {
-                send("error", [
-                    message + "（第 " + line + " 行）"
-                ]);
-            };
-        })();
-    `;
-
-    doc.head.appendChild(outputScript);
-
-    const script = doc.createElement("script");
-    script.textContent = js;
-
-    doc.body.appendChild(script);
-
-    return "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
-}
-
-
-function runWebCode() {
-    const frame = document.getElementById("preview-frame");
-    const message = document.getElementById("run-message");
-
-    if (!frame) return;
-
-    if (message) {
-        message.textContent = "程式執行中...";
+    if (code !== null) {
+        $("#code-editor").value = code;
+    } else {
+        $("#code-editor").value = starterCode[language];
     }
 
-    frame.srcdoc = buildPreviewDocument();
+    $("#run-message").textContent = "準備就緒";
+    $("#code-output").textContent = "執行結果會顯示在這裡。";
 
-    if (message) {
-        message.textContent = "網頁預覽已更新。";
+    const isWeb = ["html", "css", "js"].includes(language);
+    $("#web-preview-wrap").classList.toggle("hidden", !isWeb);
+
+    if (updateButton && isWeb) {
+        showToast(`已切換到 ${languageNames[language]}`);
     }
 }
 
+/* =====================================
+   9. Python 執行環境
+===================================== */
 
-/* =========================================
-   13. Python / C++ 執行
-   ========================================= */
-
-const languageRuntime = {
-    python: {
-        language: "python",
-        version: "3.10.0",
-        filename: "main.py"
-    },
-
-    cpp: {
-        language: "cpp",
-        version: "10.2.0",
-        filename: "main.cpp"
-    }
-};
-
-
-async function runServerCode(language) {
-    const message = document.getElementById("run-message");
-
-    if (!message) return;
-
-    if (!PISTON_API_URL) {
-        message.textContent =
-            "尚未設定 Python / C++ 執行服務。\n\n" +
-            "請部署或取得授權的 Piston API，" +
-            "再設定 PISTON_API_URL。\n\n" +
-            "目前無法直接在瀏覽器執行這兩種語言。";
-
-        return;
+async function initPython() {
+    if (pyodideInstance) {
+        return pyodideInstance;
     }
 
-    const runtime = languageRuntime[language];
-
-    if (!runtime) {
-        message.textContent = "不支援的程式語言。";
-        return;
+    if (typeof loadPyodide !== "function") {
+        throw new Error("Python 執行環境載入失敗，請檢查網路連線。");
     }
 
-    message.textContent = "程式執行中，請稍候...";
+    $("#run-message").textContent = "正在載入 Python 執行環境...";
+
+    pyodideInstance = await loadPyodide();
+
+    return pyodideInstance;
+}
+
+async function runPythonCode(code) {
+    const output = $("#code-output");
 
     try {
-        const response = await fetch(PISTON_API_URL, {
-            method: "POST",
+        $("#run-message").textContent = "正在執行 Python...";
+        output.textContent = "";
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+        const pyodide = await initPython();
 
-            body: JSON.stringify({
-                language: runtime.language,
-                version: runtime.version,
-
-                files: [
-                    {
-                        name: runtime.filename,
-                        content: codeValues[language]
-                    }
-                ],
-
-                stdin: "",
-                args: [],
-
-                compile_timeout: 10000,
-                run_timeout: 3000,
-
-                compile_memory_limit: -1,
-                run_memory_limit: -1
-            })
+        pyodide.setStdout({
+            batched: text => {
+                output.textContent += text + "\n";
+            }
         });
 
+        pyodide.setStderr({
+            batched: text => {
+                output.textContent += text + "\n";
+            }
+        });
+
+        await pyodide.runPythonAsync(code);
+
+        if (!output.textContent.trim()) {
+            output.textContent = "程式執行完成，沒有輸出。";
+        }
+
+        $("#run-message").textContent = "Python 執行完成";
+
+    } catch (error) {
+        output.textContent = String(error);
+        $("#run-message").textContent = "Python 執行失敗";
+    }
+}
+
+/* =====================================
+   10. C++ 執行環境
+===================================== */
+
+async function runCppCode(code) {
+    const output = $("#code-output");
+
+    try {
+        $("#run-message").textContent = "正在取得 C++ 編譯器...";
+        output.textContent = "";
+
+        const listResponse = await fetch(
+            "https://wandbox.org/api/list.json"
+        );
+
+        if (!listResponse.ok) {
+            throw new Error("無法連線至 C++ 編譯服務。");
+        }
+
+        const compilers = await listResponse.json();
+
+        const compiler = compilers.find(item =>
+            item.language === "C++" &&
+            /^gcc/.test(item.name)
+        );
+
+        if (!compiler) {
+            throw new Error("找不到可用的 C++ 編譯器。");
+        }
+
+        $("#run-message").textContent = "正在編譯 C++...";
+
+        const response = await fetch(
+            "https://wandbox.org/api/compile.json",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    compiler: compiler.name,
+                    code: code,
+                    stdin: ""
+                })
+            }
+        );
+
         if (!response.ok) {
-            throw new Error("伺服器錯誤：" + response.status);
+            throw new Error("C++ 編譯服務回應失敗。");
         }
 
         const result = await response.json();
 
-        let output = "";
+        const text =
+            result.program_output ||
+            result.program_error ||
+            result.compiler_error ||
+            result.status ||
+            "程式執行完成，沒有輸出。";
 
-        if (result.compile) {
-            if (result.compile.output) {
-                output +=
-                    "編譯輸出：\n" +
-                    result.compile.output +
-                    "\n";
-            }
+        output.textContent = text;
 
-            if (result.compile.stderr) {
-                output +=
-                    "編譯錯誤：\n" +
-                    result.compile.stderr +
-                    "\n";
-            }
-        }
-
-        if (result.run) {
-            output += "\n執行結果：\n";
-            output += result.run.stdout || "";
-
-            if (result.run.stderr) {
-                output +=
-                    "\n錯誤訊息：\n" +
-                    result.run.stderr;
-            }
-
-            if (result.run.code !== undefined) {
-                output +=
-                    "\n\n結束代碼：" +
-                    result.run.code;
-            }
-        }
-
-        message.textContent =
-            output || "程式已執行，但沒有輸出內容。";
+        $("#run-message").textContent =
+            result.status === "0" || result.program_output
+                ? "C++ 執行完成"
+                : "C++ 編譯或執行有錯誤";
 
     } catch (error) {
-        console.error(error);
+        output.textContent =
+            "C++ 執行服務錯誤：\n" + String(error);
 
-        message.textContent =
-            "程式執行失敗：" + error.message;
+        $("#run-message").textContent = "C++ 執行失敗";
     }
 }
 
+/* =====================================
+   11. HTML / CSS / JavaScript 預覽
+===================================== */
 
-/* =========================================
-   14. 執行程式
-   ========================================= */
-
-async function runCode() {
-    const editor = document.getElementById("code-editor");
-
-    if (editor) {
-        codeValues[activeLanguage] = editor.value;
-    }
-
-    if (
-        activeLanguage === "html" ||
-        activeLanguage === "css" ||
-        activeLanguage === "js"
-    ) {
-        runWebCode();
-        return;
-    }
-
-    if (
-        activeLanguage === "python" ||
-        activeLanguage === "cpp"
-    ) {
-        await runServerCode(activeLanguage);
-    }
+function escapeScriptEnd(code) {
+    return code.replace(/<\/script/gi, "<\\/script");
 }
 
+function buildPreviewDocument() {
+    const html =
+        currentLanguage === "html"
+            ? $("#code-editor").value
+            : starterCode.html;
 
-/* =========================================
-   15. 重設程式碼
-   ========================================= */
+    const css =
+        currentLanguage === "css"
+            ? $("#code-editor").value
+            : "";
 
-function resetCode() {
-    codeValues[activeLanguage] = starterCode[activeLanguage];
+    const js =
+        currentLanguage === "js"
+            ? $("#code-editor").value
+            : "";
 
-    renderEditor();
+    return `<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; padding: 15px; }
+${css}
+</style>
+</head>
+<body>
+${html}
+<script>
+const originalLog = console.log;
+console.log = (...args) => {
+    parent.postMessage({
+        type: "preview-log",
+        value: args.map(x => String(x)).join(" ")
+    }, "*");
+};
 
-    const frame = document.getElementById("preview-frame");
-    const message = document.getElementById("run-message");
-
-    if (frame) {
-        frame.srcdoc = "";
-    }
-
-    if (message) {
-        message.textContent = "程式碼已重設。";
-    }
-
-    showToast("已恢復預設程式碼");
+window.onerror = function(message) {
+    parent.postMessage({
+        type: "preview-error",
+        value: String(message)
+    }, "*");
+};
+${escapeScriptEnd(js)}
+<\/script>
+</body>
+</html>`;
 }
 
+function runWebCode() {
+    const frame = $("#preview-frame");
+    const output = $("#code-output");
 
-/* =========================================
-   16. 接收程式輸出
-   ========================================= */
+    $("#web-preview-wrap").classList.remove("hidden");
+
+    if (currentLanguage === "js") {
+        output.textContent = "JavaScript 的 console.log 結果會顯示在這裡。";
+    } else {
+        output.textContent = "網頁預覽已更新。";
+    }
+
+    frame.srcdoc = buildPreviewDocument();
+
+    $("#run-message").textContent = "網頁預覽已更新";
+}
 
 window.addEventListener("message", event => {
-    const frame = document.getElementById("preview-frame");
+    const frame = $("#preview-frame");
 
     if (!frame || event.source !== frame.contentWindow) {
         return;
     }
 
-    const data = event.data;
-
-    if (!data || data.type !== "playground-output") {
+    if (!event.data || !String(event.data.type).startsWith("preview-")) {
         return;
     }
 
-    const message = document.getElementById("run-message");
+    if (event.data.type === "preview-log") {
+        $("#code-output").textContent +=
+            "\n" + String(event.data.value);
+    }
 
-    if (!message) return;
-
-    const prefix =
-        data.outputType === "error"
-            ? "錯誤："
-            : "輸出：";
-
-    message.textContent +=
-        "\n" + prefix + data.message;
+    if (event.data.type === "preview-error") {
+        $("#code-output").textContent +=
+            "\n錯誤：" + String(event.data.value);
+    }
 });
 
+/* =====================================
+   12. 執行程式
+===================================== */
 
-/* =========================================
-   17. 登入視窗
-   ========================================= */
+async function runCode() {
+    const code = $("#code-editor").value;
 
-function openAuth() {
-    const modal = document.getElementById("auth-modal");
-
-    if (!modal) return;
-
-    modal.classList.remove("hidden");
-
-    renderAuthMode();
-}
-
-
-function closeAuth() {
-    const modal = document.getElementById("auth-modal");
-
-    if (modal) {
-        modal.classList.add("hidden");
-    }
-}
-
-
-function setAuthMode(mode) {
-    authMode = mode;
-    renderAuthMode();
-}
-
-
-function renderAuthMode() {
-    const title = document.getElementById("auth-title");
-    const submit = document.getElementById("auth-submit");
-    const description = document.querySelector(".modal-description");
-    const password = document.getElementById("auth-password");
-    const message = document.getElementById("auth-message");
-
-    if (authMode === "login") {
-        if (title) {
-            title.textContent = "歡迎回到程式學院";
-        }
-
-        if (submit) {
-            submit.textContent = "登入";
-        }
-
-        if (description) {
-            description.textContent = "登入後同步你的課程進度。";
-        }
-
-        if (password) {
-            password.autocomplete = "current-password";
-        }
-
-    } else {
-        if (title) {
-            title.textContent = "建立你的帳號";
-        }
-
-        if (submit) {
-            submit.textContent = "建立帳號";
-        }
-
-        if (description) {
-            description.textContent = "建立帳號，保存你的學習成果。";
-        }
-
-        if (password) {
-            password.autocomplete = "new-password";
-        }
-    }
-
-    document.querySelectorAll(".auth-mode").forEach(button => {
-        button.classList.toggle(
-            "active",
-            button.dataset.mode === authMode
-        );
-    });
-
-    if (message) {
-        message.textContent = "";
-    }
-}
-
-
-/* =========================================
-   18. 登入與註冊
-   ========================================= */
-
-async function handleAuthSubmit(event) {
-    event.preventDefault();
-
-    const message = document.getElementById("auth-message");
-
-    const email = document.getElementById("auth-email").value.trim();
-
-    const password = document.getElementById("auth-password").value;
-
-    if (!supabaseClient) {
-        if (message) {
-            message.textContent =
-                "請先設定 Supabase URL 和 Anon Key，才能使用會員功能。";
-        }
-
+    if (!code.trim()) {
+        showToast("請先輸入程式碼！");
         return;
     }
 
-    if (!email || !password) {
-        if (message) {
-            message.textContent = "請輸入電子郵件和密碼。";
-        }
-
-        return;
-    }
-
-    const submit = document.getElementById("auth-submit");
-
-    if (submit) {
-        submit.disabled = true;
-        submit.textContent = "處理中...";
-    }
+    $("#run-code").disabled = true;
 
     try {
-        let result;
+        if (currentLanguage === "python") {
+            await runPythonCode(code);
 
-        if (authMode === "login") {
-            result = await supabaseClient.auth.signInWithPassword({
-                email,
-                password
-            });
+        } else if (currentLanguage === "cpp") {
+            await runCppCode(code);
 
         } else {
-            result = await supabaseClient.auth.signUp({
-                email,
-                password
-            });
+            runWebCode();
         }
-
-        if (result.error) {
-            throw result.error;
-        }
-
-        if (
-            authMode === "signup" &&
-            !result.data.session
-        ) {
-            if (message) {
-                message.textContent =
-                    "註冊成功！請先到電子郵件確認帳號。";
-            }
-
-            return;
-        }
-
-        currentUser = result.data.user;
-
-        await loadProgress();
-
-        updateUserStatus();
-
-        closeAuth();
-
-        showToast(
-            authMode === "login"
-                ? "登入成功！"
-                : "註冊成功！"
-        );
-
-    } catch (error) {
-        console.error(error);
-
-        if (message) {
-            message.textContent =
-                error.message || "登入或註冊失敗。";
-        }
-
     } finally {
-        if (submit) {
-            submit.disabled = false;
-            submit.textContent =
-                authMode === "login" ? "登入" : "建立帳號";
-        }
+        $("#run-code").disabled = false;
     }
 }
 
-
-/* =========================================
-   19. 登出
-   ========================================= */
-
-async function signOut() {
-    if (supabaseClient) {
-        const { error } = await supabaseClient.auth.signOut();
-
-        if (error) {
-            showToast("登出失敗");
-            return;
-        }
-    }
-
-    currentUser = null;
-
-    loadLocalProgress();
-
-    updateProgress();
-    renderCourses();
-    updateUserStatus();
-
-    showToast("已登出");
+function resetCode() {
+    $("#code-editor").value = starterCode[currentLanguage];
+    $("#code-output").textContent = "程式碼已重設。";
+    $("#run-message").textContent = "準備就緒";
 }
 
-
-/* =========================================
-   20. 顯示會員狀態
-   ========================================= */
-
-function updateUserStatus() {
-    const status = document.getElementById("user-status");
-    const openButton = document.getElementById("auth-open");
-    const signoutButton = document.getElementById("signout");
-
-    if (currentUser) {
-        if (status) {
-            status.textContent =
-                currentUser.email || "會員模式";
-        }
-
-        if (openButton) {
-            openButton.classList.add("hidden");
-        }
-
-        if (signoutButton) {
-            signoutButton.classList.remove("hidden");
-        }
-
-    } else {
-        if (status) {
-            status.textContent = "訪客模式";
-        }
-
-        if (openButton) {
-            openButton.classList.remove("hidden");
-        }
-
-        if (signoutButton) {
-            signoutButton.classList.add("hidden");
-        }
-    }
-}
-
-
-/* =========================================
-   21. 測驗
-   ========================================= */
+/* =====================================
+   13. 測驗功能
+===================================== */
 
 function renderQuiz() {
-    const category = document.getElementById("quiz-category");
-    const counter = document.getElementById("quiz-counter");
-    const questionElement = document.getElementById("quiz-question");
-    const optionsElement = document.getElementById("quiz-options");
-    const feedback = document.getElementById("quiz-feedback");
-    const scoreElement = document.getElementById("quiz-score");
-    const nextButton = document.getElementById("quiz-next");
-
-    if (
-        !category ||
-        !counter ||
-        !questionElement ||
-        !optionsElement
-    ) {
-        return;
-    }
-
-    if (quizIndex >= quizQuestions.length) {
-        showQuizResult();
-        return;
-    }
-
     const question = quizQuestions[quizIndex];
 
     quizAnswered = false;
 
-    category.textContent = question.category;
+    $("#quiz-category").textContent = "程式基礎";
+    $("#quiz-counter").textContent =
+        `第 ${quizIndex + 1} / ${quizQuestions.length} 題`;
 
-    counter.textContent =
-        `QUESTION ${String(quizIndex + 1).padStart(2, "0")} / ${String(quizQuestions.length).padStart(2, "0")}`;
+    $("#quiz-question").textContent = question.question;
+    $("#quiz-feedback").textContent = "";
+    $("#quiz-score").textContent = `目前答對：${quizScore} 題`;
+    $("#quiz-next").disabled = true;
+    $("#quiz-next").textContent = "下一題";
 
-    questionElement.textContent = question.question;
+    const options = $("#quiz-options");
+    options.innerHTML = "";
 
-    optionsElement.innerHTML = question.options.map(
-        (option, index) => `
-            <button
-                class="quiz-option"
-                data-answer="${index}"
-            >
-                <span class="option-letter">
-                    ${String.fromCharCode(65 + index)}
-                </span>
+    question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "quiz-option";
+        button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
 
-                <span>${escapeHtml(option)}</span>
-            </button>
-        `
-    ).join("");
+        button.addEventListener("click", () => {
+            answerQuiz(index);
+        });
 
-    if (feedback) {
-        feedback.classList.add("hidden");
-        feedback.textContent = "";
-    }
-
-    if (scoreElement) {
-        scoreElement.textContent = `答對 ${quizScore} 題`;
-    }
-
-    if (nextButton) {
-        nextButton.disabled = true;
-
-        nextButton.textContent =
-            quizIndex === quizQuestions.length - 1
-                ? "查看成績 →"
-                : "下一題 →";
-    }
+        options.appendChild(button);
+    });
 }
 
-
-function answerQuiz(index) {
+function answerQuiz(selectedIndex) {
     if (quizAnswered) return;
-
-    const question = quizQuestions[quizIndex];
-
-    if (!question) return;
 
     quizAnswered = true;
 
-    const isCorrect = index === question.answer;
+    const question = quizQuestions[quizIndex];
+    const buttons = document.querySelectorAll(".quiz-option");
 
-    if (isCorrect) {
-        quizScore++;
-    }
+    buttons.forEach((button, index) => {
+        button.disabled = true;
 
-    document.querySelectorAll(".quiz-option").forEach(
-        (button, buttonIndex) => {
-            button.disabled = true;
-
-            if (buttonIndex === question.answer) {
-                button.classList.add("correct");
-            }
-
-            if (
-                buttonIndex === index &&
-                !isCorrect
-            ) {
-                button.classList.add("wrong");
-            }
+        if (index === question.answer) {
+            button.classList.add("correct");
         }
-    );
 
-    const feedback = document.getElementById("quiz-feedback");
+        if (index === selectedIndex && index !== question.answer) {
+            button.classList.add("wrong");
+        }
+    });
 
-    if (feedback) {
-        feedback.textContent =
-            (isCorrect ? "答對了！ " : "答錯了！ ") +
-            question.explanation;
-
-        feedback.classList.remove("hidden");
+    if (selectedIndex === question.answer) {
+        quizScore++;
+        $("#quiz-feedback").textContent =
+            "答對了！" + question.explanation;
+    } else {
+        $("#quiz-feedback").textContent =
+            "再接再厲！" + question.explanation;
     }
 
-    const scoreElement = document.getElementById("quiz-score");
+    $("#quiz-score").textContent = `目前答對：${quizScore} 題`;
 
-    if (scoreElement) {
-        scoreElement.textContent = `答對 ${quizScore} 題`;
-    }
+    $("#quiz-next").disabled = false;
 
-    const nextButton = document.getElementById("quiz-next");
-
-    if (nextButton) {
-        nextButton.disabled = false;
+    if (quizIndex === quizQuestions.length - 1) {
+        $("#quiz-next").textContent = "查看成績";
     }
 }
-
 
 function nextQuiz() {
     if (!quizAnswered) return;
 
-    quizIndex++;
+    if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        renderQuiz();
+        return;
+    }
 
-    renderQuiz();
+    showQuizResult();
 }
-
 
 function showQuizResult() {
-    const category = document.getElementById("quiz-category");
-    const counter = document.getElementById("quiz-counter");
-    const question = document.getElementById("quiz-question");
-    const options = document.getElementById("quiz-options");
-    const feedback = document.getElementById("quiz-feedback");
-    const score = document.getElementById("quiz-score");
-    const next = document.getElementById("quiz-next");
+    $("#quiz-counter").textContent = "測驗完成";
+    $("#quiz-question").textContent =
+        `你的成績是 ${quizScore} / ${quizQuestions.length} 題！`;
 
-    if (category) category.textContent = "測驗完成";
-    if (counter) counter.textContent = "RESULT";
-    if (question) {
-        question.textContent =
-            `你的成績是 ${quizScore} / ${quizQuestions.length} 題`;
-    }
+    $("#quiz-options").innerHTML = "";
+    $("#quiz-feedback").textContent =
+        quizScore === quizQuestions.length
+            ? "太棒了！全部答對！"
+            : "繼續練習，你會越來越熟練！";
 
-    if (options) {
-        options.innerHTML = "";
-    }
+    $("#quiz-score").textContent = "測驗完成";
+    $("#quiz-next").disabled = false;
+    $("#quiz-next").textContent = "重新測驗";
 
-    if (feedback) {
-        feedback.textContent =
-            quizScore === quizQuestions.length
-                ? "太厲害了！全部答對！"
-                : "繼續練習，你會越來越進步！";
-
-        feedback.classList.remove("hidden");
-    }
-
-    if (score) {
-        score.textContent = `最終分數：${quizScore} 分`;
-    }
-
-    if (next) {
-        next.disabled = false;
-        next.textContent = "重新測驗 ↻";
-        next.onclick = restartQuiz;
-    }
+    quizAnswered = true;
+    quizIndex = quizQuestions.length;
 }
-
 
 function restartQuiz() {
     quizIndex = 0;
     quizScore = 0;
     quizAnswered = false;
-
-    const next = document.getElementById("quiz-next");
-
-    if (next) {
-        next.onclick = null;
-    }
-
     renderQuiz();
 }
 
+/* =====================================
+   14. 示範會員功能
+===================================== */
 
-/* =========================================
-   22. 事件綁定
-   ========================================= */
-
-function attachEvents() {
-
-    // 課程卡片
-    document.getElementById("course-grid")
-        ?.addEventListener("click", event => {
-            const button = event.target.closest("[data-course]");
-
-            if (!button) return;
-
-            selectCourse(button.dataset.course);
-
-            document.getElementById("lesson")
-                ?.scrollIntoView({ behavior: "smooth" });
-        });
-
-
-    // 課程分類
-    document.getElementById("course-filters")
-        ?.addEventListener("click", event => {
-            const button = event.target.closest("[data-filter]");
-
-            if (!button) return;
-
-            setCourseFilter(button.dataset.filter);
-        });
-
-
-    // 課程搜尋
-    document.getElementById("course-search")
-        ?.addEventListener("input", event => {
-            searchKeyword = event.target.value.trim();
-
-            renderCourses();
-        });
-
-
-    // 標記課程完成
-    document.getElementById("lesson-complete")
-        ?.addEventListener("click", toggleLessonComplete);
-
-
-    // 課程上一堂、下一堂
-    document.getElementById("lesson-content")
-        ?.addEventListener("click", event => {
-            if (event.target.id === "previous-lesson") {
-                if (activeLessonIndex > 0) {
-                    activeLessonIndex--;
-                    renderLesson();
-                }
-            }
-
-            if (event.target.id === "next-lesson") {
-                const course = getCourse(activeCourse);
-
-                if (
-                    course &&
-                    activeLessonIndex < course.lessons.length - 1
-                ) {
-                    activeLessonIndex++;
-                    renderLesson();
-                }
-            }
-        });
-
-
-    // 語言分頁
-    document.querySelectorAll(".language-tab")
-        .forEach(button => {
-            button.addEventListener("click", () => {
-                selectLanguage(
-                    button.dataset.language,
-                    button
-                );
-            });
-        });
-
-
-    // 編輯器內容
-    document.getElementById("code-editor")
-        ?.addEventListener("input", event => {
-            codeValues[activeLanguage] = event.target.value;
-        });
-
-
-    // 執行程式
-    document.getElementById("run-code")
-        ?.addEventListener("click", runCode);
-
-
-    // 重設程式碼
-    document.getElementById("reset-code")
-        ?.addEventListener("click", resetCode);
-
-
-    // 登入視窗
-    document.getElementById("auth-open")
-        ?.addEventListener("click", openAuth);
-
-
-    // 登出
-    document.getElementById("signout")
-        ?.addEventListener("click", signOut);
-
-
-    // 關閉登入視窗
-    document.getElementById("auth-close")
-        ?.addEventListener("click", closeAuth);
-
-
-    // 點擊背景關閉登入視窗
-    document.querySelector(".modal-backdrop")
-        ?.addEventListener("click", closeAuth);
-
-
-    // 登入 / 註冊切換
-    document.querySelectorAll(".auth-mode")
-        .forEach(button => {
-            button.addEventListener("click", () => {
-                setAuthMode(button.dataset.mode);
-            });
-        });
-
-
-    // 登入表單
-    document.getElementById("auth-form")
-        ?.addEventListener("submit", handleAuthSubmit);
-
-
-    // 測驗選項
-    document.getElementById("quiz-options")
-        ?.addEventListener("click", event => {
-            const button = event.target.closest("[data-answer]");
-
-            if (!button) return;
-
-            answerQuiz(Number(button.dataset.answer));
-        });
-
-
-    // 下一題
-    document.getElementById("quiz-next")
-        ?.addEventListener("click", nextQuiz);
+function openAuthModal() {
+    $("#auth-modal").classList.remove("hidden");
+    $("#auth-modal").setAttribute("aria-hidden", "false");
 }
 
+function closeAuthModal() {
+    $("#auth-modal").classList.add("hidden");
+    $("#auth-modal").setAttribute("aria-hidden", "true");
+}
 
-/* =========================================
-   23. Supabase 登入狀態
-   ========================================= */
+function setAuthMode(mode) {
+    authMode = mode;
 
-async function initAuth() {
-    if (!supabaseClient) {
-        currentUser = null;
+    document.querySelectorAll(".auth-mode").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.mode === mode
+        );
+    });
+
+    $("#auth-title").textContent =
+        mode === "login" ? "歡迎回到程式學院" : "建立你的學習帳號";
+
+    $("#auth-submit").textContent =
+        mode === "login" ? "登入" : "註冊";
+
+    $("#auth-message").textContent =
+        "示範模式：不會建立真正的雲端會員帳號。";
+}
+
+function updateAuthDisplay() {
+    const email = localStorage.getItem(STORAGE_KEYS.user);
+
+    if (email) {
+        $("#user-status").textContent = email;
+        $("#auth-open").classList.add("hidden");
+        $("#signout").classList.remove("hidden");
+    } else {
+        $("#user-status").textContent = "尚未登入";
+        $("#auth-open").classList.remove("hidden");
+        $("#signout").classList.add("hidden");
+    }
+}
+
+function handleAuth(event) {
+    event.preventDefault();
+
+    const email = $("#auth-email").value.trim();
+    const password = $("#auth-password").value;
+
+    if (!email || password.length < 6) {
+        $("#auth-message").textContent =
+            "請輸入有效電子郵件及至少 6 個字元的密碼。";
         return;
     }
 
-    try {
-        const { data, error } =
-            await supabaseClient.auth.getUser();
+    /*
+      示範模式：
+      只記錄目前登入顯示用的電子郵件，
+      不儲存密碼，也不會驗證真正的會員帳號。
+      正式會員系統請改接 Supabase Auth。
+    */
 
-        if (error) throw error;
+    localStorage.setItem(STORAGE_KEYS.user, email);
 
-        currentUser = data.user || null;
+    $("#auth-message").textContent =
+        authMode === "register"
+            ? "示範註冊完成！目前尚未建立雲端帳號。"
+            : "示範登入完成！";
 
-        supabaseClient.auth.onAuthStateChange(
-            (event, session) => {
-                currentUser = session?.user || null;
+    updateAuthDisplay();
 
-                // 避免在 Auth 狀態變更回呼內直接等待
-                // 其他 Supabase Auth 操作。
-                setTimeout(async () => {
-                    await loadProgress();
-                    updateUserStatus();
-                }, 0);
-            }
-        );
-
-    } catch (error) {
-        console.error("會員狀態讀取失敗：", error);
-        currentUser = null;
-    }
-
-    updateUserStatus();
+    setTimeout(closeAuthModal, 900);
+    showToast("歡迎來到程式學院！");
+    $("#auth-form").reset();
 }
 
+function signOut() {
+    localStorage.removeItem(STORAGE_KEYS.user);
+    updateAuthDisplay();
+    showToast("已登出");
+}
 
-/* =========================================
-   24. 初始化網站
-   ========================================= */
+/* =====================================
+   15. 事件綁定
+===================================== */
 
-async function init() {
-    const year = document.getElementById("year");
+function attachEvents() {
+    $("#course-search").addEventListener("input", renderCourses);
 
-    if (year) {
-        year.textContent = new Date().getFullYear();
-    }
+    document.querySelectorAll(".filter-chip").forEach(button => {
+        button.addEventListener("click", () => {
+            currentFilter = button.dataset.filter;
+
+            document.querySelectorAll(".filter-chip").forEach(item => {
+                item.classList.toggle("active", item === button);
+            });
+
+            renderCourses();
+        });
+    });
+
+    document.querySelectorAll(".language-tab").forEach(button => {
+        button.addEventListener("click", () => {
+            selectLanguage(button.dataset.language);
+        });
+    });
+
+    $("#run-code").addEventListener("click", runCode);
+    $("#reset-code").addEventListener("click", resetCode);
+
+    $("#lesson-complete").addEventListener("click", completeLesson);
+
+    $("#lesson-prev").addEventListener("click", () => {
+        if (currentLessonIndex > 0) {
+            currentLessonIndex--;
+            renderLesson();
+        }
+    });
+
+    $("#lesson-next").addEventListener("click", () => {
+        if (currentCourse &&
+            currentLessonIndex < currentCourse.lessons.length - 1) {
+            currentLessonIndex++;
+            renderLesson();
+        }
+    });
+
+    $("#quiz-next").addEventListener("click", () => {
+        if (quizIndex >= quizQuestions.length) {
+            restartQuiz();
+        } else {
+            nextQuiz();
+        }
+    });
+
+    $("#auth-open").addEventListener("click", openAuthModal);
+    $("#auth-close").addEventListener("click", closeAuthModal);
+    $(".modal-backdrop").addEventListener("click", closeAuthModal);
+
+    document.querySelectorAll(".auth-mode").forEach(button => {
+        button.addEventListener("click", () => {
+            setAuthMode(button.dataset.mode);
+        });
+    });
+
+    $("#auth-form").addEventListener("submit", handleAuth);
+    $("#signout").addEventListener("click", signOut);
+
+    // 編輯器 Tab 鍵輸入四個空格
+    $("#code-editor").addEventListener("keydown", event => {
+        if (event.key === "Tab") {
+            event.preventDefault();
+
+            const textarea = event.target;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+
+            textarea.value =
+                textarea.value.substring(0, start) +
+                "    " +
+                textarea.value.substring(end);
+
+            textarea.selectionStart =
+                textarea.selectionEnd = start + 4;
+        }
+    });
+}
+
+/* =====================================
+   16. 啟動網站
+===================================== */
+
+function init() {
+    $("#year").textContent = new Date().getFullYear();
+
+    renderCourses();
+    updateProgress();
+    renderQuiz();
+    updateAuthDisplay();
 
     attachEvents();
 
-    await initAuth();
-
-    await loadProgress();
-
-    renderCourses();
-
-    updateProgress();
-
-    selectCourse("python");
-
-    renderEditor();
-
-    renderQuiz();
-
-    updateUserStatus();
+    // 預設顯示第一堂 Python 課程
+    openCourse("python");
 
     console.log("程式學院已成功啟動！");
 }
-
-
-/* =========================================
-   25. 啟動網站
-   ========================================= */
 
 document.addEventListener("DOMContentLoaded", init);
 
