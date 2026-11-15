@@ -869,3 +869,234 @@ textarea:focus {
         text-align: center;
     }
 }
+
+
+/* =====================================
+   進階程式設計與 APCS 專區
+===================================== */
+.apcs-section {
+    background: linear-gradient(180deg, #fbfaff 0%, #f5f4ff 100%);
+}
+.apcs-intro {
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1.3fr .7fr;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 32px;
+}
+.apcs-tag {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 30px;
+    color: var(--primary-dark);
+    background: #efedff;
+    font-size: 11px;
+    font-weight: 800;
+}
+.apcs-intro h3 {
+    margin: 13px 0 8px;
+    font-size: 23px;
+}
+.apcs-intro p, .apcs-lesson-panel > p {
+    color: var(--muted);
+    margin-bottom: 0;
+}
+.apcs-levels {
+    display: grid;
+    gap: 9px;
+}
+.apcs-levels div {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 11px 14px;
+    border-radius: 11px;
+    background: var(--soft);
+    font-size: 13px;
+    font-weight: 700;
+}
+.apcs-levels strong {
+    color: var(--primary);
+    font-size: 17px;
+}
+.apcs-layout {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 20px;
+    align-items: start;
+}
+.apcs-subheading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+.apcs-subheading h3 {
+    margin: 0;
+    font-size: 20px;
+}
+.apcs-subheading > span, .apcs-subheading div + span {
+    color: var(--muted);
+    font-size: 12px;
+}
+.apcs-module-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+}
+.apcs-module-card {
+    min-height: 112px;
+    padding: 15px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: white;
+    transition: .2s;
+}
+.apcs-module-card:hover, .apcs-module-card.active {
+    border-color: #aaa2ff;
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+.apcs-module-card.active {
+    background: #f5f3ff;
+}
+.apcs-module-card .module-number {
+    display: block;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+}
+.apcs-module-card strong {
+    display: block;
+    margin: 5px 0 3px;
+    font-size: 14px;
+}
+.apcs-module-card small {
+    color: var(--muted);
+    font-size: 11px;
+}
+.apcs-lesson-panel {
+    padding: 25px;
+}
+.apcs-lesson-panel h3 {
+    font-size: 23px;
+    margin: 13px 0 4px;
+}
+.apcs-module-content {
+    margin: 22px 0;
+    line-height: 1.85;
+}
+.apcs-module-content h4 {
+    margin: 18px 0 6px;
+}
+.apcs-module-content ul {
+    padding-left: 22px;
+}
+.apcs-module-content pre {
+    overflow-x: auto;
+    padding: 16px;
+    border-radius: 10px;
+    background: #202238;
+    color: #e9e9f4;
+    font: 13px/1.75 Consolas, monospace;
+}
+.apcs-module-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+.apcs-practice-panel {
+    margin-top: 28px;
+    padding: 27px;
+}
+.apcs-practice-panel h4 {
+    font-size: 18px;
+    margin: 20px 0;
+}
+.apcs-quiz-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.apcs-quiz-option {
+    padding: 13px 15px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+}
+.apcs-quiz-option:hover:not(:disabled) {
+    border-color: var(--primary);
+}
+.apcs-quiz-option:disabled {
+    cursor: default;
+}
+.apcs-quiz-option.correct {
+    border-color: #22a06b;
+    background: #eaf8f1;
+}
+.apcs-quiz-option.wrong {
+    border-color: #d64e5c;
+    background: #fff0f1;
+}
+#apcs-quiz-feedback {
+    min-height: 25px;
+    font-size: 13px;
+}
+.apcs-quiz-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 17px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 13px;
+}
+@media (max-width: 900px) {
+    .apcs-layout {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 650px) {
+    .apcs-intro {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    .apcs-module-grid, .apcs-quiz-options {
+        grid-template-columns: 1fr;
+    }
+    .apcs-lesson-panel, .apcs-practice-panel {
+        padding: 20px;
+    }
+    .apcs-subheading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+.stdin-label {
+    display: block;
+    margin: 14px 0 7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.stdin-editor {
+    display: block;
+    width: 100%;
+    min-height: 82px;
+    resize: vertical;
+    padding: 12px 14px;
+    border: 1px solid #34364e;
+    border-radius: 10px;
+    background: #292b43;
+    color: #f2f0ff;
+    font: 13px/1.6 Consolas, monospace;
+}
+.stdin-editor::placeholder {
+    color: #aeb1c8;
+}
