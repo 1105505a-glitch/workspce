@@ -27,6 +27,7 @@
             <a href="#courses">課程</a>
             <a href="#lesson">學習教室</a>
             <a href="#playground">程式練習</a>
+            <a href="#apcs">進階 / APCS</a>
             <a href="#quiz">測驗</a>
         </nav>
 
@@ -51,7 +52,7 @@
 
                 <p>
                     透過互動式課程與線上程式練習，
-                    學習 Python、C++、HTML、CSS 和 JavaScript。
+                    學習 Python、C++、HTML、CSS、JavaScript，並挑戰進階演算法與 APCS 題型。
                 </p>
 
                 <div class="hero-actions">
@@ -61,8 +62,8 @@
 
                 <div class="hero-stats">
                     <div>
-                        <strong>5</strong>
-                        <span>教學語言</span>
+                        <strong>6</strong>
+                        <span>學習領域</span>
                     </div>
                     <div>
                         <strong>15+</strong>
@@ -231,6 +232,15 @@
                             aria-label="程式碼編輯器"
                         ></textarea>
 
+                        <label class="stdin-label" for="program-input">程式輸入資料（stdin）</label>
+                        <textarea
+                            id="program-input"
+                            class="stdin-editor"
+                            spellcheck="false"
+                            aria-label="程式輸入資料"
+                            placeholder="例如：\n5\n（提供給 cin 使用；每筆資料可換行）"
+                        ></textarea>
+
                         <div class="editor-actions">
                             <button id="run-code" class="btn btn-primary">
                                 ▶ 執行程式
@@ -273,7 +283,75 @@
             </p>
         </section>
 
-        <!-- 測驗 -->
+
+        <!-- 進階程式設計與 APCS 專區 -->
+        <section class="section apcs-section" id="apcs">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">ADVANCED PROGRAMMING</span>
+                    <h2>進階程式設計與 APCS 備考</h2>
+                    <p>從基礎語法進階到演算法、資料結構與實作題，循序培養解題能力。</p>
+                </div>
+            </div>
+
+            <div class="apcs-intro panel">
+                <div>
+                    <span class="apcs-tag">進階學習路線</span>
+                    <h3>不只學會寫程式，更要學會分析問題與設計解法。</h3>
+                    <p>本專區以 C++ 為主要示範語言，搭配觀念說明、程式範例、練習題與解題思路。建議先熟悉變數、條件判斷、迴圈與函式，再依序挑戰進階單元。</p>
+                </div>
+                <div class="apcs-levels">
+                    <div><strong>01</strong><span>語法與程式邏輯</span></div>
+                    <div><strong>02</strong><span>資料結構與演算法</span></div>
+                    <div><strong>03</strong><span>APCS 題型實戰</span></div>
+                </div>
+            </div>
+
+            <div class="apcs-layout">
+                <div>
+                    <div class="apcs-subheading">
+                        <h3>進階課程地圖</h3>
+                        <span>選擇單元開始學習</span>
+                    </div>
+                    <div class="apcs-module-grid" id="apcs-module-grid"></div>
+                </div>
+
+                <article class="panel apcs-lesson-panel">
+                    <div class="lesson-meta">
+                        <span id="apcs-module-level">APCS FOUNDATION</span>
+                        <span id="apcs-module-number">單元 1</span>
+                    </div>
+                    <h3 id="apcs-module-title">陣列與資料處理</h3>
+                    <p id="apcs-module-description">學習如何儲存多筆資料並進行整理。</p>
+                    <div class="apcs-module-content" id="apcs-module-content"></div>
+                    <div class="apcs-module-actions">
+                        <button id="apcs-load-code" class="btn btn-primary">載入範例到 C++ 編輯器</button>
+                        <a href="#playground" class="btn btn-outline">前往程式練習</a>
+                    </div>
+                    <p class="small-note">載入範例會切換到原有的 C++ 編輯器，不會刪除其他語言的程式碼。</p>
+                </article>
+            </div>
+
+            <div class="panel apcs-practice-panel">
+                <div class="apcs-subheading">
+                    <div>
+                        <span class="eyebrow">APCS PRACTICE</span>
+                        <h3>觀念挑戰題</h3>
+                        <p class="small-note">每輪答對 5 題即可更新下一輪；題庫共 20 題，未全部練習前不會重複。</p>
+                    </div>
+                    <span id="apcs-quiz-counter">本輪已答對 0 / 5 題</span>
+                </div>
+                <h4 id="apcs-quiz-question">題目載入中...</h4>
+                <div class="apcs-quiz-options" id="apcs-quiz-options"></div>
+                <p id="apcs-quiz-feedback" aria-live="polite"></p>
+                <div class="apcs-quiz-bottom">
+                    <span id="apcs-quiz-score">答對：0 題</span>
+                    <button id="apcs-quiz-next" class="btn btn-primary" disabled>下一題</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 原有基礎測驗 -->
         <section class="section section-soft" id="quiz">
             <div class="section-heading">
                 <div>
@@ -286,7 +364,7 @@
             <div class="panel quiz-panel">
                 <div class="quiz-top">
                     <span id="quiz-category">程式基礎</span>
-                    <span id="quiz-counter">第 1 / 5 題</span>
+                    <span id="quiz-counter">本輪已答對 0 / 5 題</span>
                 </div>
 
                 <h3 id="quiz-question">題目載入中...</h3>
@@ -369,3 +447,4 @@
 
 </body>
 </html>
+
