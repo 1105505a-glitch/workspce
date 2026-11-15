@@ -23,8 +23,8 @@ const STORAGE_KEYS = {
 
 // Supabase 設定：請填入自己的 Project URL 與 anon / publishable key。
 // 不要使用 service_role key，也不要把資料庫密碼放進前端。
-const SUPABASE_URL = "https://msfvkhsqalnxspvuqshw.supabase.co/rest/v1/";
-const SUPABASE_ANON_KEY = "你的公開金鑰";
+const SUPABASE_URL = "https://msfvkhsqalnxspvuqshw.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_v3ulfwtYYneNkYx1S4krJQ__ydEeWo2";
 const APCS_ATTEMPTS_TABLE = "apcs_quiz_attempts";
 let db = null;
 let currentUser = null;
