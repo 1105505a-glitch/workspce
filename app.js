@@ -322,6 +322,473 @@ const quizQuestions = [
     }
 ];
 
+
+/* =====================================
+   APCS 進階課程與觀念練習
+===================================== */
+
+const apcsModules = [
+    {
+        title: "陣列與二維陣列",
+        level: "APCS 基礎",
+        description: "使用陣列整理多筆資料，並練習走訪與統計。",
+        summary: `
+            <h4>本單元學習目標</h4>
+            <ul>
+                <li>理解陣列索引從 0 開始的概念。</li>
+                <li>使用 for 迴圈走訪陣列。</li>
+                <li>使用二維陣列表示表格資料。</li>
+                <li>練習最大值、最小值、總和與計數。</li>
+            </ul>
+            <h4>範例：找出最大值</h4>
+            <pre>int a[5] = {3, 8, 2, 10, 6};
+int best = a[0];
+
+for (int i = 1; i < 5; i++) {
+    if (a[i] > best) {
+        best = a[i];
+    }
+}
+cout << best;</pre>
+            <p><strong>解題提醒：</strong>先設定初始答案，再逐一檢查每筆資料，避免直接假設答案一定是某個固定數字。</p>`,
+        code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int a[5] = {3, 8, 2, 10, 6};
+    int best = a[0];
+
+    for (int i = 1; i < 5; i++) {
+        if (a[i] > best) {
+            best = a[i];
+        }
+    }
+
+    cout << best << endl;
+    return 0;
+}`
+    },
+    {
+        title: "字串與字元處理",
+        level: "APCS 基礎",
+        description: "分析文字內容、字元頻率與字串規則。",
+        summary: `
+            <h4>本單元學習目標</h4>
+            <ul><li>使用 string 儲存文字。</li><li>使用 length() 取得字串長度。</li><li>使用索引讀取每個字元。</li><li>練習字元統計、反轉與條件判斷。</li></ul>
+            <h4>範例：統計英文字母 a</h4>
+            <pre>string s = "banana";
+int count = 0;
+
+for (int i = 0; i < s.length(); i++) {
+    if (s[i] == 'a') count++;
+}
+cout << count;</pre>
+            <p><strong>解題提醒：</strong>注意字串索引範圍是 0 到 length()-1，並分清楚字元單引號與字串雙引號。</p>`,
+        code: `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s = "banana";
+    int count = 0;
+
+    for (int i = 0; i < (int)s.length(); i++) {
+        if (s[i] == 'a') {
+            count++;
+        }
+    }
+
+    cout << count << endl;
+    return 0;
+}`
+    },
+    {
+        title: "函式與遞迴",
+        level: "APCS 進階",
+        description: "拆解問題、設計函式，理解遞迴的終止條件。",
+        summary: `
+            <h4>本單元學習目標</h4>
+            <ul><li>將重複工作整理成函式。</li><li>理解參數、回傳值與作用範圍。</li><li>找出遞迴的終止條件。</li><li>追蹤函式呼叫的執行順序。</li></ul>
+            <h4>範例：計算階乘</h4>
+            <pre>int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}</pre>
+            <p><strong>解題提醒：</strong>遞迴一定要有能停止呼叫的基本情況，否則可能造成堆疊溢位。</p>`,
+        code: `#include <iostream>
+using namespace std;
+
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << factorial(n) << endl;
+    return 0;
+}`
+    },
+    {
+        title: "排序與搜尋",
+        level: "APCS 進階",
+        description: "掌握常見排序方式與線性、二分搜尋。",
+        summary: `
+            <h4>本單元學習目標</h4>
+            <ul><li>理解排序前後資料的差異。</li><li>認識氣泡排序與選擇排序。</li><li>使用 sort() 排序。</li><li>理解二分搜尋必須建立在已排序資料上。</li></ul>
+            <h4>範例：使用 sort</h4>
+            <pre>#include <algorithm>
+int a[5] = {5, 2, 4, 1, 3};
+sort(a, a + 5);</pre>
+            <p><strong>解題提醒：</strong>二分搜尋每次排除一半搜尋範圍，通常比逐一檢查更有效率，但資料必須先排序。</p>`,
+        code: `#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int a[5] = {5, 2, 4, 1, 3};
+    sort(a, a + 5);
+
+    for (int i = 0; i < 5; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+    return 0;
+}`
+    },
+    {
+        title: "STL 與常用資料結構",
+        level: "APCS 進階",
+        description: "使用 vector、stack、queue、map 與 set。",
+        summary: `
+            <h4>常用工具</h4>
+            <ul><li><code>vector</code>：可動態增減長度的序列。</li><li><code>stack</code>：後進先出。</li><li><code>queue</code>：先進先出。</li><li><code>map</code>：鍵值對應。</li><li><code>set</code>：儲存不重複元素。</li></ul>
+            <h4>範例：vector</h4>
+            <pre>vector<int> v;
+v.push_back(10);
+v.push_back(20);
+
+for (int x : v) {
+    cout << x << " ";
+}</pre>
+            <p><strong>解題提醒：</strong>先判斷題目需要的操作，再選擇合適的資料結構。</p>`,
+        code: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<int> v;
+    v.push_back(10);
+    v.push_back(20);
+    v.push_back(30);
+
+    for (int x : v) {
+        cout << x << " ";
+    }
+    cout << endl;
+    return 0;
+}`
+    },
+    {
+        title: "時間複雜度",
+        level: "APCS 進階",
+        description: "估算程式執行步數，判斷演算法效率。",
+        summary: `
+            <h4>常見複雜度</h4>
+            <ul><li><code>O(1)</code>：固定次數操作。</li><li><code>O(log n)</code>：每次縮小固定比例範圍。</li><li><code>O(n)</code>：走訪一次資料。</li><li><code>O(n log n)</code>：常見高效率排序。</li><li><code>O(n²)</code>：兩層與 n 有關的迴圈。</li></ul>
+            <h4>範例：雙層迴圈</h4>
+            <pre>for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+        // 常數時間操作
+    }
+}</pre>
+            <p><strong>解題提醒：</strong>估算資料量 n 增加時，操作次數如何成長；不要只看程式碼行數。</p>`,
+        code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    long long operations = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            operations++;
+        }
+    }
+
+    cout << operations << endl;
+    return 0;
+}`
+    },
+    {
+        title: "圖論：DFS 與 BFS",
+        level: "APCS 挑戰",
+        description: "把關係建模成圖，練習深度與廣度優先搜尋。",
+        summary: `
+            <h4>本單元學習目標</h4>
+            <ul><li>理解頂點與邊的意義。</li><li>使用 adjacency list 儲存圖。</li><li>理解 DFS 的遞迴或堆疊流程。</li><li>理解 BFS 使用 queue 逐層搜尋。</li></ul>
+            <h4>範例：BFS 核心概念</h4>
+            <pre>queue<int> q;
+visited[start] = true;
+q.push(start);
+
+while (!q.empty()) {
+    int u = q.front();
+    q.pop();
+
+    for (int v : graph[u]) {
+        if (!visited[v]) {
+            visited[v] = true;
+            q.push(v);
+        }
+    }
+}</pre>
+            <p><strong>解題提醒：</strong>搜尋時要記錄 visited，避免在有環的圖中重複拜訪。</p>`,
+        code: `#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int n = 5;
+    vector<vector<int>> graph(n);
+    graph[0] = {1, 2};
+    graph[1] = {0, 3};
+    graph[2] = {0, 4};
+    graph[3] = {1};
+    graph[4] = {2};
+
+    vector<bool> visited(n, false);
+    queue<int> q;
+    q.push(0);
+    visited[0] = true;
+
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        cout << u << " ";
+
+        for (int v : graph[u]) {
+            if (!visited[v]) {
+                visited[v] = true;
+                q.push(v);
+            }
+        }
+    }
+    cout << endl;
+    return 0;
+}`
+    },
+    {
+        title: "動態規劃入門",
+        level: "APCS 挑戰",
+        description: "將大問題拆成重複子問題，利用狀態保存答案。",
+        summary: `
+            <h4>本單元學習目標</h4>
+            <ul><li>找出重複子問題。</li><li>定義 dp[i] 代表的意義。</li><li>設定初始狀態。</li><li>建立狀態轉移式。</li></ul>
+            <h4>範例：爬樓梯</h4>
+            <pre>dp[1] = 1;
+dp[2] = 2;
+
+for (int i = 3; i <= n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2];
+}</pre>
+            <p><strong>解題提醒：</strong>先用一句話說清楚 dp[i] 的意義，再推導轉移式與邊界條件。</p>`,
+        code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    if (n <= 0) {
+        cout << 0 << endl;
+        return 0;
+    }
+
+    long long dp[1005] = {};
+    dp[1] = 1;
+    if (n >= 2) dp[2] = 2;
+
+    for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    cout << dp[n] << endl;
+    return 0;
+}`
+    }
+];
+
+const apcsQuestions = [
+    { question: "一個陣列 int a[6] 的有效索引範圍是哪一個？", options: ["1 到 6", "0 到 5", "0 到 6", "1 到 5"], answer: 1, explanation: "C++ 陣列索引從 0 開始，因此 a[6] 的有效索引是 0 到 5。" },
+    { question: "若每次把搜尋範圍縮小為原來的一半，時間複雜度通常為何？", options: ["O(1)", "O(n)", "O(log n)", "O(n²)"], answer: 2, explanation: "每次縮小一半的搜尋範圍，通常是 O(log n)，例如二分搜尋。" },
+    { question: "哪一種資料結構符合先進先出？", options: ["stack", "queue", "set", "map"], answer: 1, explanation: "queue 是佇列，符合先進先出（FIFO）；stack 則是後進先出。" },
+    { question: "使用二分搜尋前，通常需要什麼條件？", options: ["資料已排序", "資料全部相同", "資料筆數為偶數", "資料必須是字串"], answer: 0, explanation: "二分搜尋依靠資料順序排除一半範圍，因此資料必須已排序。" },
+    { question: "動態規劃常用來處理哪一種問題特性？", options: ["只有一個輸入", "重複子問題與最優子結構", "不能使用陣列", "完全沒有規則"], answer: 1, explanation: "動態規劃會保存子問題答案，避免重複計算。" },
+    { question: "以下哪個迴圈會執行 5 次？", options: ["for(int i=1;i<5;i++)", "for(int i=0;i<5;i++)", "for(int i=0;i<=5;i++)", "for(int i=5;i<0;i++)"], answer: 1, explanation: "i 從 0 到 4，共執行 5 次。" },
+    { question: "在 C++ 中，哪個運算子代表取餘數？", options: ["/", "%", "*", "//"], answer: 1, explanation: "% 是取餘數運算子，例如 7 % 3 的結果是 1。" },
+    { question: "若 int x=7; 執行 x/=2; 後 x 為何？", options: ["3", "3.5", "4", "2"], answer: 0, explanation: "int 是整數型態，整數除法會捨去小數部分，因此結果是 3。" },
+    { question: "vector<int> v; v.push_back(8); 之後 v.size() 是多少？", options: ["0", "1", "8", "不確定"], answer: 1, explanation: "push_back 加入一個元素，因此 vector 的大小為 1。" },
+    { question: "stack 的 pop() 操作會移除哪個元素？", options: ["最早放入的元素", "最晚放入的元素", "最小的元素", "最大的元素"], answer: 1, explanation: "stack 是後進先出（LIFO），pop() 移除最上方、最後放入的元素。" },
+    { question: "一個單層迴圈完整走訪 n 筆資料，常見時間複雜度為何？", options: ["O(1)", "O(log n)", "O(n)", "O(n²)"], answer: 2, explanation: "每筆資料處理一次，操作次數與 n 成正比，因此是 O(n)。" },
+    { question: "兩層各執行 n 次的巢狀迴圈，常見時間複雜度為何？", options: ["O(n)", "O(n log n)", "O(n²)", "O(2n)"], answer: 2, explanation: "內外層各執行 n 次，總操作次數約為 n 乘 n。" },
+    { question: "DFS 深度優先搜尋常見的實作方式是哪一種？", options: ["遞迴或 stack", "只有 queue", "只有 sort", "只有 map"], answer: 0, explanation: "DFS 可使用遞迴（呼叫堆疊）或自己建立 stack 實作。" },
+    { question: "BFS 廣度優先搜尋通常使用哪種資料結構？", options: ["stack", "queue", "set", "priority-free array only"], answer: 1, explanation: "BFS 使用 queue，依照距離起點的層次逐步拜訪節點。" },
+    { question: "圖形搜尋中的 visited 陣列主要用途為何？", options: ["排序節點", "避免重複拜訪", "計算平均值", "儲存輸入文字"], answer: 1, explanation: "visited 用來標記已拜訪節點，避免重複走訪或陷入循環。" },
+    { question: "函式的 return 主要用途是什麼？", options: ["重複執行迴圈", "回傳結果並結束函式", "宣告陣列", "讀取鍵盤"], answer: 1, explanation: "return 可將結果傳回呼叫端，並結束目前函式。" },
+    { question: "遞迴函式最重要的必要條件之一是什麼？", options: ["一定要有兩個參數", "必須有終止條件", "不能使用 if", "只能呼叫一次"], answer: 1, explanation: "終止條件能讓遞迴停止，否則可能造成無限呼叫與堆疊溢位。" },
+    { question: "sort(a, a+n) 的用途是什麼？", options: ["反轉陣列", "排序範圍內的元素", "刪除陣列", "計算總和"], answer: 1, explanation: "C++ STL 的 sort 可將指定範圍由小到大排序。" },
+    { question: "map 通常用來儲存哪種資料關係？", options: ["鍵和值的對應", "只有圖片", "固定大小的矩陣", "函式呼叫順序"], answer: 0, explanation: "map 儲存 key-value 配對，可透過 key 查找對應的 value。" },
+    { question: "若要快速檢查某個元素是否存在且不需要重複值，可考慮哪個 STL？", options: ["set", "queue", "stack", "string"], answer: 0, explanation: "set 儲存不重複元素，適合進行元素存在性查詢。" }
+];
+
+let currentApcsModule = 0;
+let apcsQuizIndex = 0;
+let apcsQuizScore = 0; // 本輪答對題數，目標 5 題
+let apcsQuizAnswered = false;
+let apcsQuizCurrent = null;
+let apcsQuizRoundAttempts = 0;
+let apcsQuizPool = [];
+
+function shuffleApcsQuestions(items) {
+    const result = [...items];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}
+
+function drawApcsQuestion() {
+    if (apcsQuizPool.length === 0) {
+        apcsQuizPool = shuffleApcsQuestions(apcsQuestions);
+        showToast("題庫已全部練習過，已重新整理題庫！");
+    }
+    apcsQuizCurrent = apcsQuizPool.pop();
+    apcsQuizRoundAttempts++;
+}
+
+function renderApcsModules() {
+    const grid = $("#apcs-module-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    apcsModules.forEach((module, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "apcs-module-card" + (index === currentApcsModule ? " active" : "");
+        button.innerHTML = `
+            <span class="module-number">UNIT ${String(index + 1).padStart(2, "0")}</span>
+            <strong>${module.title}</strong>
+            <small>${module.level}</small>
+        `;
+        button.addEventListener("click", () => {
+            currentApcsModule = index;
+            renderApcsModules();
+            renderApcsModule();
+        });
+        grid.appendChild(button);
+    });
+}
+
+function renderApcsModule() {
+    const module = apcsModules[currentApcsModule];
+    if (!module) return;
+
+    $("#apcs-module-level").textContent = module.level.toUpperCase();
+    $("#apcs-module-number").textContent = `單元 ${currentApcsModule + 1} / ${apcsModules.length}`;
+    $("#apcs-module-title").textContent = module.title;
+    $("#apcs-module-description").textContent = module.description;
+    $("#apcs-module-content").innerHTML = module.summary;
+}
+
+function loadApcsCode() {
+    const module = apcsModules[currentApcsModule];
+    if (!module) return;
+    selectLanguage("cpp", true, module.code);
+    $("#playground").scrollIntoView({ behavior: "smooth", block: "start" });
+    showToast(`已載入「${module.title}」範例`);
+}
+
+function renderApcsQuiz() {
+    if (!apcsQuizCurrent) drawApcsQuestion();
+    const q = apcsQuizCurrent;
+    apcsQuizAnswered = false;
+    $("#apcs-quiz-counter").textContent = `本輪已答對 ${apcsQuizScore} / 5 題`;
+    $("#apcs-quiz-question").textContent = q.question;
+    $("#apcs-quiz-feedback").textContent = "";
+    $("#apcs-quiz-score").textContent = `本輪答對：${apcsQuizScore} / 5 題`;
+    $("#apcs-quiz-next").disabled = true;
+    $("#apcs-quiz-next").textContent = "下一題";
+
+    const wrap = $("#apcs-quiz-options");
+    wrap.innerHTML = "";
+    q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "apcs-quiz-option";
+        button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+        button.addEventListener("click", () => answerApcsQuiz(index));
+        wrap.appendChild(button);
+    });
+}
+
+function answerApcsQuiz(selected) {
+    if (apcsQuizAnswered) return;
+    apcsQuizAnswered = true;
+    const q = apcsQuizCurrent;
+    document.querySelectorAll(".apcs-quiz-option").forEach((button, index) => {
+        button.disabled = true;
+        if (index === q.answer) button.classList.add("correct");
+        if (index === selected && index !== q.answer) button.classList.add("wrong");
+    });
+
+    if (selected === q.answer) {
+        apcsQuizScore++;
+        $("#apcs-quiz-feedback").textContent = "答對了！" + q.explanation;
+    } else {
+        $("#apcs-quiz-feedback").textContent = "答錯了，正確答案已標示。" + q.explanation;
+    }
+
+    $("#apcs-quiz-score").textContent = `本輪答對：${apcsQuizScore} / 5 題`;
+    $("#apcs-quiz-counter").textContent = `本輪已答對 ${apcsQuizScore} / 5 題`;
+    $("#apcs-quiz-next").disabled = false;
+    $("#apcs-quiz-next").textContent = apcsQuizScore >= 5 ? "開始下一輪 5 題" : "下一題";
+}
+
+function nextApcsQuiz() {
+    if (!apcsQuizAnswered) return;
+
+    if (apcsQuizScore >= 5) {
+        apcsQuizScore = 0;
+        apcsQuizRoundAttempts = 0;
+        apcsQuizCurrent = null;
+        drawApcsQuestion();
+        renderApcsQuiz();
+        showToast("恭喜完成 5 題！已更新下一輪題目。");
+        return;
+    }
+
+    apcsQuizCurrent = null;
+    drawApcsQuestion();
+    renderApcsQuiz();
+}
+
+function restartApcsQuiz() {
+    apcsQuizIndex = 0;
+    apcsQuizScore = 0;
+    apcsQuizAnswered = false;
+    apcsQuizCurrent = null;
+    apcsQuizRoundAttempts = 0;
+    apcsQuizPool = shuffleApcsQuestions(apcsQuestions);
+    drawApcsQuestion();
+    renderApcsQuiz();
+}
+
+
 /* =====================================
    5. 工具函式與本機資料
 ===================================== */
@@ -637,7 +1104,7 @@ async function runPythonCode(code) {
    10. C++ 執行環境
 ===================================== */
 
-async function runCppCode(code) {
+async function runCppCode(code, stdinValue = "") {
     const output = $("#code-output");
 
     try {
@@ -682,7 +1149,7 @@ async function runCppCode(code) {
                 body: JSON.stringify({
                     compiler: compiler.name,
                     code: code,
-                    stdin: ""
+                    stdin: stdinValue
                 })
             }
         );
@@ -832,7 +1299,7 @@ async function runCode() {
             await runPythonCode(code);
 
         } else if (currentLanguage === "cpp") {
-            await runCppCode(code);
+            await runCppCode(code, $("#program-input").value);
 
         } else {
             runWebCode();
@@ -1089,6 +1556,16 @@ function signOut() {
 
 function attachEvents() {
 
+    // APCS 進階課程與觀念題
+    $("#apcs-load-code").addEventListener("click", loadApcsCode);
+    $("#apcs-quiz-next").addEventListener("click", () => {
+        if (apcsQuizIndex >= apcsQuestions.length) {
+            restartApcsQuiz();
+        } else {
+            nextApcsQuiz();
+        }
+    });
+
     // 課程搜尋
     $("#course-search").addEventListener(
         "input",
@@ -1228,6 +1705,9 @@ function init() {
         new Date().getFullYear();
 
     renderCourses();
+    renderApcsModules();
+    renderApcsModule();
+    renderApcsQuiz();
     updateProgress();
     renderQuiz();
     updateAuthDisplay();
